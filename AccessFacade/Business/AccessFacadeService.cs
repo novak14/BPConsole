@@ -7,75 +7,27 @@ namespace AccessFacade.Business
 {
     public class AccessFacadeService
     {
-        private IDapperSyncRepository dapperSync;
+        private IResultHelp resultHelp;
 
-        public AccessFacadeService (IDapperSyncRepository dapperSync)
+        public AccessFacadeService (IResultHelp resultHelp)
         {
-            this.dapperSync = dapperSync;
+            this.resultHelp = resultHelp;
         }
 
-        // Synchronize Dapper
-        public string SelectDapperSync()
+        public void InsertSelectResult(string[] times)
         {
-            dapperSync.Select();
-            return dapperSync.SelectTest();
+            resultHelp.SelectResults(times[0], times[1], times[2]);
         }
 
-        public string UpdateDapperSync()
+        public void DeleteInsert()
         {
-            return "test";
+            resultHelp.DeleteTest();
         }
 
-        public string InsertDapperSync(string FirstName, int id)
+        public void InsertDelete(string firstName, int id)
         {
-            return dapperSync.InsertTest(FirstName, id);
+            resultHelp.InsertTest(firstName, id);
         }
 
-        public void DeleteDapperSync()
-        {
-            dapperSync.DeleteTest();
-        }
-
-        // Asychronize Dapper
-        public string SelectDapperASync()
-        {
-            return "test";
-        }
-
-        public string UpdateDapperASync()
-        {
-            return "test";
-        }
-
-        public string InsertDapperASync()
-        {
-            return "test";
-        }
-
-        public string DeleteDapperASync()
-        {
-            return "test";
-        }
-
-        // Procedure Dapper
-        public string SelectDapperProcedure()
-        {
-            return "test";
-        }
-
-        public string UpdateDapperProcedure()
-        {
-            return "test";
-        }
-
-        public string InsertDapperProcedure()
-        {
-            return "test";
-        }
-
-        public string DeleteDapperProcedure()
-        {
-            return "test";
-        }
     }
 }

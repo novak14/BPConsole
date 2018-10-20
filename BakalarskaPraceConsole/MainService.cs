@@ -15,6 +15,7 @@ namespace BakalarskaPraceConsole
         private readonly DapperService dapperService;
         private readonly AdoService adoService;
         private readonly EFCoreService eFCoreService;
+
         public MainService(
             AccessFacadeService accessFacadeService,
             DapperService dapperService,
@@ -35,21 +36,31 @@ namespace BakalarskaPraceConsole
             Stopwatch efCore = new Stopwatch();
 
             dapper.Start();
-            string dapperSync = dapperService.SelectDapperSync();
+            for (int i = 0; i < 100; i ++)
+            {
+                string dapperSync = dapperService.SelectDapperSync();
+            }
             dapper.Stop();
             times[0] = dapper.Elapsed.ToString();
 
             ado.Start();
-            string adoSync = adoService.SelectAdoSync();
+            for (int i = 0; i < 100; i++)
+            {
+                string adoSync = adoService.SelectAdoSync();
+            }
             ado.Stop();
             times[1] = ado.Elapsed.ToString();
 
             efCore.Start();
-            string efCoreSync = eFCoreService.SelectEFCoreSync();
+            for (int i = 0; i < 100; i++)
+            {
+                string efCoreSync = eFCoreService.SelectEFCoreSync();
+            }
             efCore.Stop();
             times[2] = efCore.Elapsed.ToString();
 
             return times;
+            //accessFacadeService.InsertSelectResult(times);
         }
 
         public async Task GetAsync()
@@ -285,13 +296,13 @@ namespace BakalarskaPraceConsole
             Random random = new Random();
             for (int i = 1; i <= 1000; i ++)
             {
-                var test = accessFacadeService.InsertDapperSync(random.GenerateRandomFirstName(), i);
+                accessFacadeService.InsertDelete(random.GenerateRandomFirstName(), i);
             }
         }
 
         private void DeleteToInsert()
         {
-            accessFacadeService.DeleteDapperSync();
+            accessFacadeService.DeleteInsert();
         }
     }
 }

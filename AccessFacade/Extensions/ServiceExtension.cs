@@ -45,6 +45,7 @@ namespace Microsoft.Extensions.DependencyInjection
             services.AddScoped<IEFCoreSyncRepository, EFCoreSyncRepository>();
             services.AddScoped<IEFCoreASyncRepository, EFCoreASyncRepository>();
             services.AddScoped<IEFCoreProcedureRepository, EFCoreProcedureRepository>();
+            services.AddScoped<IResultHelp, ResultHelp>();
 
 
             //SERVICES - zapouzdreni vsechn repositories pod jeden objekt

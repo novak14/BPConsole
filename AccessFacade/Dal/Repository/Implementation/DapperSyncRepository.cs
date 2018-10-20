@@ -46,27 +46,6 @@ namespace AccessFacade.Dal.Repository.Implementation
             }
         }
 
-        public string InsertTest(string FirstName, int id)
-        {
-            string sql = @"INSERT INTO UserTestDelete(Id, FirstName) VALUES(@Id, @FirstName)";
-
-            Stopwatch stopwatch = Stopwatch.StartNew();
-
-            using (var connection = new SqlConnection(options.connectionString))
-            {
-                var tmp = connection.Execute(sql, new { Id = id, FirstName = FirstName });
-                if (tmp > 0)
-                {
-                    int a = 3;
-                }
-
-                //dom = connection.Query<TestModel>(sql);
-            }
-            stopwatch.Stop();
-            var testStopwatch = stopwatch.Elapsed.ToString();
-            return testStopwatch;
-        }
-
         public void Select()
         {
             #region normalSelect
@@ -108,17 +87,6 @@ namespace AccessFacade.Dal.Repository.Implementation
             stopwatch.Stop();
             var testStopwatch = stopwatch.Elapsed.ToString();
             return testStopwatch;
-        }
-
-        public void DeleteTest()
-        {
-            string sql = @"DELETE FROM UserTestInsert";
-
-
-            using (var connection = new SqlConnection(options.connectionString))
-            {
-                var tmp = connection.Execute(sql);
-            }
         }
 
         public void Update(string FirstName, int id)
