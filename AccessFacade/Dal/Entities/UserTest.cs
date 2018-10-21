@@ -16,6 +16,6 @@ namespace AccessFacade.Dal.Entities
 
         public int FkOneToTestId { get; set; }
 
-        //public OneToTest OneToTest { get; set; }
+        public OneToTest OneToTest { get; set; }
     }
 }

@@ -45,7 +45,7 @@ namespace AccessFacade.Dal.Repository.Implementation
         public void Select()
         {
             #region normalSelect
-            var normalSelect = context.UserTest.ToList();
+            //var normalSelect = context.UserTest.ToList();
             #endregion
 
             #region oneToMany
@@ -53,6 +53,10 @@ namespace AccessFacade.Dal.Repository.Implementation
             //    .Include(one => one.OneToTest)
             //    .ToList();
             #endregion
+
+            var query = (from c in context.UserTest
+                         join k in context.OneToTest on c.FkOneToTestId equals k.Id
+                         select new { c, k }).ToList();
         }
 
         public void Update(string FirstName, int id)

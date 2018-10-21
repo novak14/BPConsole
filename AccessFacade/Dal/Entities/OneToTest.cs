@@ -10,6 +10,7 @@ namespace AccessFacade.Dal.Entities
         public string Name { get; set; }
         public int Age { get; set; }
 
-        public ICollection<UserTest> UserTests { get; set; }
+        public List<UserTest> UserTests { get; set; } = new List<UserTest>();
+        //public UserTest UserTest { get; set; }
     }
 }

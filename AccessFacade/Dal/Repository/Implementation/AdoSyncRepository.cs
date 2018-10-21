@@ -68,43 +68,12 @@ namespace AccessFacade.Dal.Repository.Implementation
         public void Select()
         {
             #region normalSelect
-            string query = "SELECT * FROM UserTest";
-            List<UserTest> userTests = new List<UserTest>();
-
-            using (SqlConnection connection = new SqlConnection(options.connectionString))
-            {
-                SqlCommand command = new SqlCommand(query, connection);
-                try
-                {
-                    connection.Open();
-                    SqlDataReader reader = command.ExecuteReader();
-                    while (reader.Read())
-                    {
-                        UserTest userTest = new UserTest();
-
-                        userTest.Id = (int)reader["Id"];
-                        userTest.FirstName = reader["FirstName"] as string;
-                        userTest.LastName = reader["LastName"] as string;
-                        userTest.Address = reader["Address"] as string;
-                        userTest.FkOneToTestId = (int)reader["FkOneToTestId"];
-
-                        userTests.Add(userTest);
-                    }
-                }
-                catch (Exception ex)
-                {
-                    throw new Exception(ex.ToString());
-                }
-            }
-            #endregion
-            #region oneToMany
-            //string queryOneToMany = "SELECT * FROM UserTest INNER JOIN OneToTest ON OneToTest.Id = UserTest.FkOneToTestId";
-
+            //string query = "SELECT * FROM UserTest";
             //List<UserTest> userTests = new List<UserTest>();
 
             //using (SqlConnection connection = new SqlConnection(options.connectionString))
             //{
-            //    SqlCommand command = new SqlCommand(queryOneToMany, connection);
+            //    SqlCommand command = new SqlCommand(query, connection);
             //    try
             //    {
             //        connection.Open();
@@ -119,10 +88,6 @@ namespace AccessFacade.Dal.Repository.Implementation
             //            userTest.Address = reader["Address"] as string;
             //            userTest.FkOneToTestId = (int)reader["FkOneToTestId"];
 
-            //            userTest.OneToTest = new OneToTest();
-            //            userTest.OneToTest.Id = userTest.FkOneToTestId;
-            //            userTest.OneToTest.Name = reader["Name"] as string;
-            //            userTest.OneToTest.Age = (int)reader["Age"];
             //            userTests.Add(userTest);
             //        }
             //    }
@@ -131,6 +96,42 @@ namespace AccessFacade.Dal.Repository.Implementation
             //        throw new Exception(ex.ToString());
             //    }
             //}
+            #endregion
+            #region oneToMany
+            string queryOneToMany = "SELECT * FROM UserTest INNER JOIN OneToTest ON OneToTest.Id = UserTest.FkOneToTestId";
+
+            List<UserTest> userTests = new List<UserTest>();
+
+            using (SqlConnection connection = new SqlConnection(options.connectionString))
+            {
+                SqlCommand command = new SqlCommand(queryOneToMany, connection);
+                try
+                {
+                    connection.Open();
+                    SqlDataReader reader = command.ExecuteReader();
+                    while (reader.Read())
+                    {
+                        UserTest userTest = new UserTest();
+
+                        userTest.Id = (int)reader["Id"];
+                        userTest.FirstName = reader["FirstName"] as string;
+                        userTest.LastName = reader["LastName"] as string;
+                        userTest.Address = reader["Address"] as string;
+                        userTest.FkOneToTestId = (int)reader["FkOneToTestId"];
+
+                        userTest.OneToTest = new OneToTest();
+                        userTest.OneToTest.Id = userTest.FkOneToTestId;
+                        userTest.OneToTest.Name = reader["Name"] as string;
+                        userTest.OneToTest.Age = (int)reader["Age"];
+                        userTests.Add(userTest);
+                    }
+                    connection.Close();
+                }
+                catch (Exception ex)
+                {
+                    throw new Exception(ex.ToString());
+                }
+            }
             #endregion
         }
 

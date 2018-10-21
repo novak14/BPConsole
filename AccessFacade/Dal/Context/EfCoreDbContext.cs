@@ -30,15 +30,20 @@ namespace AccessFacade.Dal.Context
         public DbSet<UserTestInsert> UserTestInsert { get; set; }
         public DbSet<UserTestUpdate> UserTestUpdate { get; set; }
         public DbSet<UserTestDelete> UserTestDelete { get; set; }
-        //public DbSet<OneToTest> OneToTest { get; set; }
+        public DbSet<OneToTest> OneToTest { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            modelBuilder.Entity<UserTest>()
+                .HasOne(s => s.OneToTest)
+                .WithMany(g => g.UserTests)
+                .HasForeignKey(s => s.FkOneToTestId);
+
             //modelBuilder.Entity<UserTest>()
-            //    .HasOne<OneToTest>(s => s.OneToTest)
-            //    .WithMany(g => g.UserTests)
+            //    .HasOne(s => s.OneToTest)
+            //    .WithOne(b => b.UserTest)
             //    .HasForeignKey(s => s.FkOneToTestId);
-            modelBuilder.Entity<UserTest>();
+
 
             base.OnModelCreating(modelBuilder);
         }
