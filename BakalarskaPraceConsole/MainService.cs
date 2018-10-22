@@ -35,6 +35,7 @@ namespace BakalarskaPraceConsole
             Stopwatch ado = new Stopwatch();
             Stopwatch efCore = new Stopwatch();
 
+            accessFacadeService.OpenConnectionPool();
 
             dapper.Start();
             for (int i = 0; i < 100; i ++)

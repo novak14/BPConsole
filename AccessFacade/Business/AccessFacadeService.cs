@@ -29,5 +29,10 @@ namespace AccessFacade.Business
             resultHelp.InsertTest(firstName, id);
         }
 
+        public void OpenConnectionPool()
+        {
+            resultHelp.OpenConnectionPool();
+        }
+
     }
 }

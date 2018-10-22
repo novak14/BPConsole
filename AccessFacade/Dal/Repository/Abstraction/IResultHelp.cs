@@ -13,5 +13,6 @@ namespace AccessFacade.Dal.Repository.Abstraction
 
         void InsertTest(string FirstName, int id);
         void DeleteTest();
+        void OpenConnectionPool();
     }
 }

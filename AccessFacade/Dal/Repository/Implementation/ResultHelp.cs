@@ -85,5 +85,16 @@ namespace AccessFacade.Dal.Repository.Implementation
                 var tmp = connection.Execute(sql, new { DapperSync = dapper, AdoSync = ado, EfCoreSync = efCore });
             }
         }
+
+        public void OpenConnectionPool()
+        {
+            string sql = @"INSERT INTO UpdateResults(DapperSync, AdoSync, EfCoreSync) VALUES(@DapperSync, @AdoSync, @EfCoreSync)";
+
+            using (var connection = new SqlConnection(options.connectionString))
+            {
+                connection.Open();
+                connection.Close();
+            }
+        }
     }
 }
