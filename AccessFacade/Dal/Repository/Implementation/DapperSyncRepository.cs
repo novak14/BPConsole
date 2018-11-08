@@ -32,7 +32,14 @@ namespace AccessFacade.Dal.Repository.Implementation
 
             using (var connection = new SqlConnection(options.connectionString))
             {
-                var tmp = connection.Execute(sql, new { Id = id});
+                try
+                {
+                    var tmp = connection.Execute(sql, new { Id = id });
+                }
+                catch (Exception ex)
+                {
+                    throw new Exception(nameof(ex));
+                }
             }
         }
 
@@ -42,7 +49,14 @@ namespace AccessFacade.Dal.Repository.Implementation
 
             using (var connection = new SqlConnection(options.connectionString))
             {
-                var tmp = connection.Execute(sql, new { FirstName = FirstName, LastName = LastName, Address = Address, FkOneToTestId = FkOneToTestId });
+                try
+                {
+                    var tmp = connection.Execute(sql, new { FirstName = FirstName, LastName = LastName, Address = Address, FkOneToTestId = FkOneToTestId });
+                }
+                catch (Exception ex)
+                {
+                    throw new Exception(nameof(ex));
+                }
             }
         }
 
@@ -84,31 +98,22 @@ namespace AccessFacade.Dal.Repository.Implementation
 
             using (var connection = new SqlConnection(options.connectionString))
             {
-                var lookup = new Dictionary<int, OneToTest>();
+                try
+                {
+                    var lookup = new Dictionary<int, OneToTest>();
 
-                var tmp = connection.Query<UserTest, OneToTest, UserTest>(sqlOneToMany,
-                    (userTest, oneToTest) =>
-                    {
-                        userTest.OneToTest = oneToTest;
-                        return userTest;
-                    }).ToList();
+                    var tmp = connection.Query<UserTest, OneToTest, UserTest>(sqlOneToMany,
+                       (userTest, oneToTest) =>
+                       {
+                           userTest.OneToTest = oneToTest;
+                           return userTest;
+                       }).ToList();
+                }
+                catch (Exception ex)
+                {
+                    throw new Exception(nameof(ex));
+                }
             }
-        }
-
-        public string SelectTest()
-        {
-            string sql = @"SELECT * FROM UserDetails";
-
-            Stopwatch stopwatch = Stopwatch.StartNew();
-
-            using (var connection = new SqlConnection(options.connectionString))
-            {
-                var tmp = connection.Query<UserInformation>(sql);
-                //dom = connection.Query<TestModel>(sql);
-            }
-            stopwatch.Stop();
-            var testStopwatch = stopwatch.Elapsed.ToString();
-            return testStopwatch;
         }
 
         public void Update(string FirstName, int id)
@@ -117,7 +122,14 @@ namespace AccessFacade.Dal.Repository.Implementation
 
             using (var connection = new SqlConnection(options.connectionString))
             {
-                var tmp = connection.Execute(sql, new { FirstName = FirstName, Id = id });
+                try
+                {
+                    var tmp = connection.Execute(sql, new { FirstName = FirstName, Id = id });
+                }
+                catch (Exception ex)
+                {
+                    throw new Exception(nameof(ex));
+                }
             }
         }
     }

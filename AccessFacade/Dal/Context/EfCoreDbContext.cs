@@ -38,14 +38,13 @@ namespace AccessFacade.Dal.Context
                 .HasOne(s => s.OneToTest)
                 .WithMany(g => g.UserTests)
                 .HasForeignKey(s => s.FkOneToTestId);
-
-            //modelBuilder.Entity<UserTest>()
-            //    .HasOne(s => s.OneToTest)
-            //    .WithOne(b => b.UserTest)
-            //    .HasForeignKey(s => s.FkOneToTestId);
-
-
             base.OnModelCreating(modelBuilder);
+        }
+
+        public override int SaveChanges()
+        {
+            ChangeTracker.DetectChanges();
+            return base.SaveChanges();
         }
     }
 }

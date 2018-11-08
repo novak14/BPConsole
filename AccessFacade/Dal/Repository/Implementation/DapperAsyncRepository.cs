@@ -31,7 +31,14 @@ namespace AccessFacade.Dal.Repository.Implementation
 
             using (var connection = new SqlConnection(options.connectionString))
             {
-                var tmp = await connection.ExecuteAsync(sql, new { Id = id });
+                try
+                {
+                    var tmp = await connection.ExecuteAsync(sql, new { Id = id });
+                }
+                catch (Exception ex)
+                {
+                    throw new Exception(nameof(ex));
+                }
             }
         }
 
@@ -41,7 +48,14 @@ namespace AccessFacade.Dal.Repository.Implementation
 
             using (var connection = new SqlConnection(options.connectionString))
             {
-                var tmp = await connection.ExecuteAsync(sql, new { FirstName = FirstName, LastName = LastName, Address = Address, FkOneToTestId = FkOneToTestId });
+                try
+                {
+                    var tmp = await connection.ExecuteAsync(sql, new { FirstName = FirstName, LastName = LastName, Address = Address, FkOneToTestId = FkOneToTestId });
+                }
+                catch (Exception ex)
+                {
+                    throw new Exception(nameof(ex));
+                }
             }
         }
 
@@ -52,8 +66,15 @@ namespace AccessFacade.Dal.Repository.Implementation
 
             using (var connection = new SqlConnection(options.connectionString))
             {
-                var tmp = await connection.QueryAsync<UserTest>(sql);
-                 tmp.ToList();
+                try
+                {
+                    var tmp = await connection.QueryAsync<UserTest>(sql);
+                    tmp.ToList();
+                }
+                catch (Exception ex)
+                {
+                    throw new Exception(nameof(ex));
+                }
             }
             #endregion
         }
@@ -64,7 +85,14 @@ namespace AccessFacade.Dal.Repository.Implementation
 
             using (var connection = new SqlConnection(options.connectionString))
             {
-                var tmp = await connection.ExecuteAsync(sql, new { FirstName = FirstName, Id = id });
+                try
+                {
+                    var tmp = await connection.ExecuteAsync(sql, new { FirstName = FirstName, Id = id });
+                }
+                catch (Exception ex)
+                {
+                    throw new Exception(nameof(ex));
+                }
             }
         }
     }

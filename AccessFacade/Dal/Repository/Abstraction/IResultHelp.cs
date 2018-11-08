@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace AccessFacade.Dal.Repository.Abstraction
 {
@@ -12,7 +13,9 @@ namespace AccessFacade.Dal.Repository.Abstraction
         void DeleteResults(string dapper, string ado, string efCore);
 
         void InsertTest(string FirstName, int id);
+        Task InsertTestAsync(string FirstName, int id);
         void DeleteTest();
+        Task DeleteTestAsync();
         void OpenConnectionPool();
     }
 }

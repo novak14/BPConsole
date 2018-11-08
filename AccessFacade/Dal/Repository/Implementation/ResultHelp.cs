@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace AccessFacade.Dal.Repository.Implementation
 {
@@ -28,7 +29,14 @@ namespace AccessFacade.Dal.Repository.Implementation
 
             using (var connection = new SqlConnection(options.connectionString))
             {
-                var tmp = connection.Execute(sql, new { DapperSync = dapper, AdoSync = ado, EfCoreSync = efCore });
+                try
+                {
+                    var tmp = connection.Execute(sql, new { DapperSync = dapper, AdoSync = ado, EfCoreSync = efCore });
+                }
+                catch (Exception ex)
+                {
+                    throw new Exception(nameof(ex));
+                }
             }
         }
 
@@ -38,7 +46,31 @@ namespace AccessFacade.Dal.Repository.Implementation
 
             using (var connection = new SqlConnection(options.connectionString))
             {
-                var tmp = connection.Execute(sql);
+                try
+                {
+                    var tmp = connection.Execute(sql);
+                }
+                catch (Exception ex)
+                {
+                    throw new Exception(nameof(ex));
+                }
+            }
+        }
+
+        public async Task DeleteTestAsync()
+        {
+            string sql = @"DELETE FROM UserTestInsert";
+
+            using (var connection = new SqlConnection(options.connectionString))
+            {
+                try
+                {
+                    var tmp = await connection.ExecuteAsync(sql);
+                }
+                catch (Exception ex)
+                {
+                    throw new Exception(nameof(ex));
+                }
             }
         }
 
@@ -48,7 +80,14 @@ namespace AccessFacade.Dal.Repository.Implementation
 
             using (var connection = new SqlConnection(options.connectionString))
             {
-                var tmp = connection.Execute(sql, new { DapperSync = dapper, AdoSync = ado, EfCoreSync = efCore });
+                try
+                {
+                    var tmp = connection.Execute(sql, new { DapperSync = dapper, AdoSync = ado, EfCoreSync = efCore });
+                }
+                catch (Exception ex)
+                {
+                    throw new Exception(nameof(ex));
+                }
             }
         }
 
@@ -58,10 +97,30 @@ namespace AccessFacade.Dal.Repository.Implementation
 
             using (var connection = new SqlConnection(options.connectionString))
             {
-                var tmp = connection.Execute(sql, new { Id = id, FirstName = FirstName });
-                if (tmp > 0)
+                try
                 {
-                    int a = 3;
+                    var tmp = connection.Execute(sql, new { Id = id, FirstName = FirstName });
+                }
+                catch (Exception ex)
+                {
+                    throw new Exception(nameof(ex));
+                }
+            }
+        }
+
+        public async Task InsertTestAsync(string FirstName, int id)
+        {
+            string sql = @"INSERT INTO UserTestDelete(Id, FirstName) VALUES(@Id, @FirstName)";
+
+            using (var connection = new SqlConnection(options.connectionString))
+            {
+                try
+                {
+                    var tmp = await connection.ExecuteAsync(sql, new { Id = id, FirstName = FirstName });
+                }
+                catch (Exception ex)
+                {
+                    throw new Exception(nameof(ex));
                 }
             }
         }
@@ -72,7 +131,14 @@ namespace AccessFacade.Dal.Repository.Implementation
 
             using (var connection = new SqlConnection(options.connectionString))
             {
-                var tmp = connection.Execute(sql, new { DapperSync = dapper, AdoSync = ado, EfCoreSync = efCore });
+                try
+                {
+                    var tmp = connection.Execute(sql, new { DapperSync = dapper, AdoSync = ado, EfCoreSync = efCore });
+                }
+                catch (Exception ex)
+                {
+                    throw new Exception(nameof(ex));
+                }
             }
         }
 
@@ -82,14 +148,19 @@ namespace AccessFacade.Dal.Repository.Implementation
 
             using (var connection = new SqlConnection(options.connectionString))
             {
-                var tmp = connection.Execute(sql, new { DapperSync = dapper, AdoSync = ado, EfCoreSync = efCore });
+                try
+                {
+                    var tmp = connection.Execute(sql, new { DapperSync = dapper, AdoSync = ado, EfCoreSync = efCore });
+                }
+                catch (Exception ex)
+                {
+                    throw new Exception(nameof(ex));
+                }
             }
         }
 
         public void OpenConnectionPool()
         {
-            string sql = @"INSERT INTO UpdateResults(DapperSync, AdoSync, EfCoreSync) VALUES(@DapperSync, @AdoSync, @EfCoreSync)";
-
             using (var connection = new SqlConnection(options.connectionString))
             {
                 connection.Open();

@@ -28,19 +28,40 @@ namespace AccessFacade.Dal.Repository.Implementation
 
         public async Task InsertAsync(UserTestInsert userTestInsert)
         {
-            context.UserTestInsert.Add(userTestInsert);
-            await context.SaveChangesAsync();
+            try
+            {
+                context.UserTestInsert.Add(userTestInsert);
+                await context.SaveChangesAsync();
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(nameof(ex));
+            }
         }
 
         public async Task SelectAsync()
         {
-            var normalSelect = await context.UserTest.ToListAsync();
+            try
+            {
+                var normalSelect = await context.UserTest.ToListAsync();
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(nameof(ex));
+            }
         }
 
         public async Task UpdateAsync(UserTestUpdate userTestUpdate)
         {
-            context.UserTestUpdate.Update(userTestUpdate);
-            await context.SaveChangesAsync();
+            try
+            {
+                context.UserTestUpdate.Update(userTestUpdate);
+                await context.SaveChangesAsync();
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(nameof(ex));
+            }
         }
 
         public Task UpdateAsync(string FirstName, int id)

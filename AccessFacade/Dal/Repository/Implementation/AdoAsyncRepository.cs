@@ -94,7 +94,7 @@ namespace AccessFacade.Dal.Repository.Implementation
                 }
                 catch (Exception ex)
                 {
-                    throw new Exception(ex.ToString());
+                    throw new Exception(nameof(ex));
                 }
             }
         }

@@ -6,6 +6,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using System;
 using System.Collections.Generic;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
 
@@ -27,14 +28,28 @@ namespace AccessFacade.Dal.Repository.Implementation
 
         public void Delete(UserTestDelete userTestDelete)
         {
-            context.UserTestDelete.Remove(userTestDelete);
-            context.SaveChanges();
+            try
+            {
+                context.UserTestDelete.Remove(userTestDelete);
+                context.SaveChanges();
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(nameof(ex));
+            }
         }
 
         public void Insert(UserTestInsert userTestInsert)
         {
-            context.UserTestInsert.Add(userTestInsert);
-            context.SaveChanges();
+            try
+            {
+                context.UserTestInsert.Add(userTestInsert);
+                context.SaveChanges();
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(nameof(ex));
+            }
         }
 
         public void Insert(string FirstName, string LastName, string Address, int FkOneToTestId)
@@ -53,10 +68,16 @@ namespace AccessFacade.Dal.Repository.Implementation
             //    .Include(one => one.OneToTest)
             //    .ToList();
             #endregion
-
-            var query = (from c in context.UserTest
-                         join k in context.OneToTest on c.FkOneToTestId equals k.Id
-                         select new { c, k }).ToList();
+            try
+            {
+                var query = (from c in context.UserTest
+                             join k in context.OneToTest on c.FkOneToTestId equals k.Id
+                             select new { c, k }).ToList();
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(nameof(ex));
+            }
         }
 
         public void Update(string FirstName, int id)
@@ -66,9 +87,15 @@ namespace AccessFacade.Dal.Repository.Implementation
 
         public void Update(UserTestUpdate userTestUpdate)
         {
-            context.UserTestUpdate.Update(userTestUpdate);
-            context.SaveChanges();
-
+            try
+            {
+                context.UserTestUpdate.Update(userTestUpdate);
+                context.SaveChanges();
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(nameof(ex));
+            }
         }
     }
 }

@@ -22,25 +22,54 @@ namespace AccessFacade.Dal.Repository.Implementation
 
         public void Delete(int id)
         {
-            var affRows = context.Database.ExecuteSqlCommand("dbo.deleteProcedure @Id = {0}", id);
-            context.SaveChanges();
+            try
+            {
+                var affRows = context.Database.ExecuteSqlCommand("dbo.deleteProcedure @Id = {0}", id);
+                context.SaveChanges();
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(nameof(ex));
+            }
         }
 
         public void Insert(string FirstName, string LastName, string Address, int FkOneToTestId)
         {
-            var affRows = context.Database.ExecuteSqlCommand("dbo.insertProcedure @FirstName = {0}, @LastName = {1}, @Address = {2}, @FkOneToTestId = {3}", FirstName, LastName, Address, FkOneToTestId);
-            context.SaveChanges();
+            try
+            {
+                var affRows = context.Database.ExecuteSqlCommand("dbo.insertProcedure @FirstName = {0}, @LastName = {1}, @Address = {2}, @FkOneToTestId = {3}", FirstName, LastName, Address, FkOneToTestId);
+                context.SaveChanges();
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(nameof(ex));
+            }
         }
 
         public void Select()
         {
-            var userTest = context.UserTest.FromSql("dbo.selectProcedure").ToList();
+            try
+            {
+                var userTest = context.UserTest.FromSql("dbo.selectProcedure").ToList();
+
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(nameof(ex));
+            }
         }
 
         public void Update(string FirstName, int id)
         {
-            var affRows = context.Database.ExecuteSqlCommand("dbo.updateProcedure @FirstName = {0}, @Id = {1}", FirstName, id);
-            context.SaveChanges();
+            try
+            {
+                var affRows = context.Database.ExecuteSqlCommand("dbo.updateProcedure @FirstName = {0}, @Id = {1}", FirstName, id);
+                context.SaveChanges();
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(nameof(ex));
+            }
         }
     }
 }

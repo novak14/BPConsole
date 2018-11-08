@@ -29,7 +29,14 @@ namespace AccessFacade.Dal.Repository.Implementation
         {
             using (SqlConnection connection = new SqlConnection(options.connectionString))
             {
-                var tmp = connection.Query<UserTest>("dbo.selectProcedure", commandType: CommandType.StoredProcedure).ToList();
+                try
+                {
+                    var tmp = connection.Query<UserTest>("dbo.selectProcedure", commandType: CommandType.StoredProcedure).ToList();
+                }
+                catch (Exception ex)
+                {
+                    throw new Exception(nameof(ex));
+                }
             }
         }
 
@@ -37,9 +44,16 @@ namespace AccessFacade.Dal.Repository.Implementation
         {
             using (SqlConnection connection = new SqlConnection(options.connectionString))
             {
-                var tmp = connection.Query<UserTest>("dbo.insertProcedure", 
+                try
+                {
+                    var tmp = connection.Query<UserTest>("dbo.insertProcedure",
                     new { FirstName = FirstName, LastName = LastName, Address = Address, FkOneToTestId = FkOneToTestId },
                     commandType: CommandType.StoredProcedure).ToList();
+                }
+                catch (Exception ex)
+                {
+                    throw new Exception(nameof(ex));
+                }
             }
         }
 
@@ -47,9 +61,16 @@ namespace AccessFacade.Dal.Repository.Implementation
         {
             using (SqlConnection connection = new SqlConnection(options.connectionString))
             {
-                var tmp = connection.Query<UserTest>("dbo.deleteProcedure",
+                try
+                {
+                    var tmp = connection.Query<UserTest>("dbo.deleteProcedure",
                     new { Id = id },
                     commandType: CommandType.StoredProcedure).ToList();
+                }
+                catch (Exception ex)
+                {
+                    throw new Exception(nameof(ex));
+                }
             }
         }
 
@@ -57,9 +78,16 @@ namespace AccessFacade.Dal.Repository.Implementation
         {
             using (SqlConnection connection = new SqlConnection(options.connectionString))
             {
-                var tmp = connection.Query<UserTest>("dbo.updateProcedure",
+                try
+                {
+                    var tmp = connection.Query<UserTest>("dbo.updateProcedure",
                     new { FirstName = FirstName, Id = id },
                     commandType: CommandType.StoredProcedure).ToList();
+                }
+                catch (Exception ex)
+                {
+                    throw new Exception(nameof(ex));
+                }
             }
         }
     }

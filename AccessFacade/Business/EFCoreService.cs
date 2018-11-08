@@ -33,8 +33,7 @@ namespace AccessFacade.Business
 
         public string UpdateEFCoreSync(string FirstName, int id)
         {
-            UserTestUpdate userTestUpdate = new UserTestUpdate(FirstName, id);
-            eFCoreSyncRepository.Update(userTestUpdate);
+            eFCoreSyncRepository.Update(new UserTestUpdate(FirstName, id));
 
             return "test";
         }

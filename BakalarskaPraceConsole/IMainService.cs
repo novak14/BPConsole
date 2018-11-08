@@ -7,6 +7,8 @@ namespace BakalarskaPraceConsole
 {
     public interface IMainService
     {
+        void Initialize();
+
         string[] GetSync();
         Task<string[]> GetAsync();
         string[] GetProc();

@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace AccessFacade.Business
 {
@@ -27,6 +28,16 @@ namespace AccessFacade.Business
         public void InsertDelete(string firstName, int id)
         {
             resultHelp.InsertTest(firstName, id);
+        }
+
+        public async Task DeleteInsertAsync()
+        {
+            await resultHelp.DeleteTestAsync();
+        }
+
+        public async Task InsertDeleteAsync(string firstName, int id)
+        {
+            await resultHelp.InsertTestAsync(firstName, id);
         }
 
         public void OpenConnectionPool()
