@@ -34,10 +34,15 @@ namespace AccessFacade.Dal.Context
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<UserTest>()
-                .HasOne(s => s.OneToTest)
-                .WithMany(g => g.UserTests)
+            modelBuilder.Entity<OneToTest>()
+                .HasMany(s => s.UserTests)
+                .WithOne(c => c.OneToTest)
                 .HasForeignKey(s => s.FkOneToTestId);
+
+            //modelBuilder.Entity<UserTest>()
+            //    .HasOne(s => s.OneToTest)
+            //    .WithMany(g => g.UserTests)
+            //    .HasForeignKey(s => s.FkOneToTestId);
             base.OnModelCreating(modelBuilder);
         }
 

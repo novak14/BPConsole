@@ -31,6 +31,9 @@ namespace BakalarskaPraceConsole
         public void Initialize()
         {
             accessFacadeService.OpenConnectionPool();
+            string efCoreSync = eFCoreService.SelectEFCoreSync();
+            string dapperSync = dapperService.SelectDapperSync();
+            string adoSync = adoService.SelectAdoSync();
         }
 
         public string[] GetSync()
@@ -39,6 +42,14 @@ namespace BakalarskaPraceConsole
             Stopwatch dapper = new Stopwatch();
             Stopwatch ado = new Stopwatch();
             Stopwatch efCore = new Stopwatch();
+
+            efCore.Start();
+            for (int i = 0; i < 1000; i++)
+            {
+                string efCoreSync = eFCoreService.SelectEFCoreSync();
+            }
+            efCore.Stop();
+            times[2] = efCore.Elapsed.ToString();
 
             dapper.Start();
             for (int i = 0; i < 1000; i++)
@@ -55,14 +66,6 @@ namespace BakalarskaPraceConsole
             }
             ado.Stop();
             times[1] = ado.Elapsed.ToString();
-
-            efCore.Start();
-            for (int i = 0; i < 1000; i++)
-            {
-                string efCoreSync = eFCoreService.SelectEFCoreSync();
-            }
-            efCore.Stop();
-            times[2] = efCore.Elapsed.ToString();
 
             return times;
             //accessFacadeService.InsertSelectResult(times);
@@ -109,6 +112,14 @@ namespace BakalarskaPraceConsole
             Stopwatch ado = new Stopwatch();
             Stopwatch efCore = new Stopwatch();
 
+            efCore.Start();
+            for (int i = 0; i < 1000; i++)
+            {
+                string efCoreProcedure = eFCoreService.SelectEFCoreProcedure();
+            }
+            efCore.Stop();
+            times[2] = efCore.Elapsed.ToString();
+
             dapper.Start();
             for (int i = 0; i < 1000; i++)
             {
@@ -124,14 +135,6 @@ namespace BakalarskaPraceConsole
             }
             ado.Stop();
             times[1] = ado.Elapsed.ToString();
-
-            efCore.Start();
-            for (int i = 0; i < 1000; i++)
-            {
-                string efCoreProcedure = eFCoreService.SelectEFCoreProcedure();
-            }
-            efCore.Stop();
-            times[2] = efCore.Elapsed.ToString();
 
             return times;
         }

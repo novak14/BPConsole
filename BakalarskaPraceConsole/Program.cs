@@ -24,7 +24,7 @@ namespace BakalarskaPraceConsole
             var tests = serviceProvider.GetService<IMainService>();
             tests.Initialize();
 
-            Select(tests);
+            //Select(tests);
             //SelectAsync(tests).Wait();
             //Update(tests);
             //UpdateAsync(tests).Wait();

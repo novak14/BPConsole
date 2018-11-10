@@ -67,12 +67,18 @@ namespace AccessFacade.Dal.Repository.Implementation
             //var test = context.UserTest
             //    .Include(one => one.OneToTest)
             //    .ToList();
+
+            var testOne = context.OneToTest
+                .Include(user => user.UserTests)
+                .ToList();
             #endregion
             try
             {
-                var query = (from c in context.UserTest
-                             join k in context.OneToTest on c.FkOneToTestId equals k.Id
-                             select new { c, k }).ToList();
+                //var query = (from c in context.UserTest
+                //             join k in context.OneToTest on c.FkOneToTestId equals k.Id
+                //             select new { c, k }).ToList();
+
+                //var queryTest = context.UserTest.Include(a => a.OneToTest).AsNoTracking().ToList();
             }
             catch (Exception ex)
             {

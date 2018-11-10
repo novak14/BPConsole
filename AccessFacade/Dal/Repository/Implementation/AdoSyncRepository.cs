@@ -67,6 +67,49 @@ namespace AccessFacade.Dal.Repository.Implementation
 
         public void Select()
         {
+            string queryOneToMany = "SELECT * FROM OneToTest INNER JOIN UserTest ON OneToTest.Id = UserTest.FkOneToTestId";
+
+            List<OneToTest> oneToTests = new List<OneToTest>();
+            var lookup = new Dictionary<int, OneToTest>();
+
+
+            using (SqlConnection connection = new SqlConnection(options.connectionString))
+            {
+                using (SqlCommand command = new SqlCommand(queryOneToMany, connection))
+                {
+                    try
+                    {
+                        connection.Open();
+                        SqlDataReader reader = command.ExecuteReader();
+                        while (reader.Read())
+                        {
+                            OneToTest oneTest = new OneToTest();
+                            UserTest userTest = new UserTest();
+
+                            oneTest.Id = (int)reader["Id"];
+                            oneTest.Name = reader["Name"] as string;
+                            oneTest.Age = (int)reader["Age"];
+                            oneTest.Id = (int)reader["Id"];
+
+                            userTest.FirstName = reader["FirstName"] as string;
+                            userTest.LastName = reader["LastName"] as string;
+                            userTest.Address = reader["Address"] as string;
+                            userTest.FkOneToTestId = (int)reader["FkOneToTestId"];
+                            //doplnit
+                            OneToTest oneTestTest;
+
+                            if (!lookup.TryGetValue(oneTest.Id, out oneTestTest))
+                                lookup.Add(oneTest.Id, oneTestTest = oneTest);
+
+                            oneTestTest.UserTests.Add(userTest);
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        throw new Exception(ex.ToString());
+                    }
+                }
+            }
             #region normalSelect
             //string query = "SELECT * FROM UserTest";
             //List<UserTest> userTests = new List<UserTest>();
@@ -98,40 +141,41 @@ namespace AccessFacade.Dal.Repository.Implementation
             //}
             #endregion
             #region oneToMany
-            string queryOneToMany = "SELECT * FROM UserTest INNER JOIN OneToTest ON OneToTest.Id = UserTest.FkOneToTestId";
+            //string queryOneToMany = "SELECT * FROM UserTest INNER JOIN OneToTest ON OneToTest.Id = UserTest.FkOneToTestId";
 
-            List<UserTest> userTests = new List<UserTest>();
+            //List<UserTest> userTests = new List<UserTest>();
 
-            using (SqlConnection connection = new SqlConnection(options.connectionString))
-            {
-                SqlCommand command = new SqlCommand(queryOneToMany, connection);
-                try
-                {
-                    connection.Open();
-                    SqlDataReader reader = command.ExecuteReader();
-                    while (reader.Read())
-                    {
-                        UserTest userTest = new UserTest();
+            //using (SqlConnection connection = new SqlConnection(options.connectionString))
+            //{
+            //    using (SqlCommand command = new SqlCommand(queryOneToMany, connection))
+            //    {
+            //        try
+            //        {
+            //            connection.Open();
+            //            SqlDataReader reader = command.ExecuteReader();
+            //            while (reader.Read())
+            //            {
+            //                UserTest userTest = new UserTest();
 
-                        userTest.Id = (int)reader["Id"];
-                        userTest.FirstName = reader["FirstName"] as string;
-                        userTest.LastName = reader["LastName"] as string;
-                        userTest.Address = reader["Address"] as string;
-                        userTest.FkOneToTestId = (int)reader["FkOneToTestId"];
+            //                userTest.Id = (int)reader["Id"];
+            //                userTest.FirstName = reader["FirstName"] as string;
+            //                userTest.LastName = reader["LastName"] as string;
+            //                userTest.Address = reader["Address"] as string;
+            //                userTest.FkOneToTestId = (int)reader["FkOneToTestId"];
 
-                        userTest.OneToTest = new OneToTest();
-                        userTest.OneToTest.Id = userTest.FkOneToTestId;
-                        userTest.OneToTest.Name = reader["Name"] as string;
-                        userTest.OneToTest.Age = (int)reader["Age"];
-                        userTests.Add(userTest);
-                    }
-                    connection.Close();
-                }
-                catch (Exception ex)
-                {
-                    throw new Exception(ex.ToString());
-                }
-            }
+            //                userTest.OneToTest = new OneToTest();
+            //                userTest.OneToTest.Id = userTest.FkOneToTestId;
+            //                userTest.OneToTest.Name = reader["Name"] as string;
+            //                userTest.OneToTest.Age = (int)reader["Age"];
+            //                userTests.Add(userTest);
+            //            }
+            //        }
+            //        catch (Exception ex)
+            //        {
+            //            throw new Exception(ex.ToString());
+            //        }
+            //    }
+            //}
             #endregion
         }
 
