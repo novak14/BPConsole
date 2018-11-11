@@ -59,6 +59,7 @@ namespace BakalarskaPraceConsole
             dapper.Stop();
             times[0] = dapper.Elapsed.ToString();
 
+
             ado.Start();
             for (int i = 0; i < 1000; i++)
             {
@@ -66,6 +67,7 @@ namespace BakalarskaPraceConsole
             }
             ado.Stop();
             times[1] = ado.Elapsed.ToString();
+
 
             return times;
             //accessFacadeService.InsertSelectResult(times);

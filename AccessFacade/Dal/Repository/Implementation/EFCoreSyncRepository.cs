@@ -70,6 +70,7 @@ namespace AccessFacade.Dal.Repository.Implementation
 
             var testOne = context.OneToTest
                 .Include(user => user.UserTests)
+                .AsNoTracking()
                 .ToList();
             #endregion
             try

@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
+using System.Linq;
 using System.Text;
 
 namespace AccessFacade.Dal.Repository.Implementation
@@ -72,7 +73,6 @@ namespace AccessFacade.Dal.Repository.Implementation
             List<OneToTest> oneToTests = new List<OneToTest>();
             var lookup = new Dictionary<int, OneToTest>();
 
-
             using (SqlConnection connection = new SqlConnection(options.connectionString))
             {
                 using (SqlCommand command = new SqlCommand(queryOneToMany, connection))
@@ -80,33 +80,36 @@ namespace AccessFacade.Dal.Repository.Implementation
                     try
                     {
                         connection.Open();
-                        SqlDataReader reader = command.ExecuteReader();
-                        while (reader.Read())
+                        using (SqlDataReader reader = command.ExecuteReader())
                         {
-                            OneToTest oneTest = new OneToTest();
-                            UserTest userTest = new UserTest();
+                            while (reader.Read())
+                            {
+                                OneToTest oneTest = new OneToTest();
+                                UserTest userTest = new UserTest();
 
-                            oneTest.Id = (int)reader["Id"];
-                            oneTest.Name = reader["Name"] as string;
-                            oneTest.Age = (int)reader["Age"];
-                            oneTest.Id = (int)reader["Id"];
+                                oneTest.Id = (int)reader["Id"];
+                                oneTest.Name = reader["Name"] as string;
+                                oneTest.Age = (int)reader["Age"];
 
-                            userTest.FirstName = reader["FirstName"] as string;
-                            userTest.LastName = reader["LastName"] as string;
-                            userTest.Address = reader["Address"] as string;
-                            userTest.FkOneToTestId = (int)reader["FkOneToTestId"];
-                            //doplnit
-                            OneToTest oneTestTest;
+                                userTest.Id = (int)reader["Id"];
+                                userTest.FirstName = reader["FirstName"] as string;
+                                userTest.LastName = reader["LastName"] as string;
+                                userTest.Address = reader["Address"] as string;
+                                userTest.FkOneToTestId = (int)reader["FkOneToTestId"];
 
-                            if (!lookup.TryGetValue(oneTest.Id, out oneTestTest))
-                                lookup.Add(oneTest.Id, oneTestTest = oneTest);
-
-                            oneTestTest.UserTests.Add(userTest);
+                                OneToTest oneTestTest;
+                                if (!lookup.TryGetValue(oneTest.Id, out oneTestTest))
+                                {
+                                    lookup.Add(oneTest.Id, oneTestTest = oneTest);
+                                    oneToTests.Add(oneTestTest);
+                                }
+                                oneTestTest.UserTests.Add(userTest);
+                            }
                         }
                     }
                     catch (Exception ex)
                     {
-                        throw new Exception(ex.ToString());
+                        throw new Exception(nameof(ex));
                     }
                 }
             }
