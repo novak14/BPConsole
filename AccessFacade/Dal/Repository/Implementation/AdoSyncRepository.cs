@@ -70,12 +70,25 @@ namespace AccessFacade.Dal.Repository.Implementation
         {
             string queryOneToMany = "SELECT * FROM OneToTest INNER JOIN UserTest ON OneToTest.Id = UserTest.FkOneToTestId";
 
+            string query = @"SELECT 
+                                OneToTest.Id,
+                                OneToTest.Name,
+                                OneToTest.Age,
+                                UserTest.Id AS UserId,
+                                UserTest.FirstName,
+                                UserTest.LastName,
+                                UserTest.Address,
+                                UserTest.FkOneToTestId
+                                FROM OneToTest 
+                            INNER JOIN UserTest 
+                            ON OneToTest.Id = UserTest.FkOneToTestId";
+
             List<OneToTest> oneToTests = new List<OneToTest>();
             var lookup = new Dictionary<int, OneToTest>();
 
             using (SqlConnection connection = new SqlConnection(options.connectionString))
             {
-                using (SqlCommand command = new SqlCommand(queryOneToMany, connection))
+                using (SqlCommand command = new SqlCommand(query, connection))
                 {
                     try
                     {
@@ -84,26 +97,28 @@ namespace AccessFacade.Dal.Repository.Implementation
                         {
                             while (reader.Read())
                             {
-                                OneToTest oneTest = new OneToTest();
+                                int oneTestId = (int)reader["Id"];
+
+                                OneToTest oneTest;
+                                if (!lookup.TryGetValue(oneTestId, out oneTest))
+                                {
+                                    oneTest = new OneToTest();
+                                    oneTest.Id = oneTestId;
+                                    oneTest.Name = reader["Name"] as string;
+                                    oneTest.Age = (int)reader["Age"];
+
+                                    lookup.Add(oneTestId, oneTest);
+                                    oneToTests.Add(oneTest);
+                                }
+
                                 UserTest userTest = new UserTest();
-
-                                oneTest.Id = (int)reader["Id"];
-                                oneTest.Name = reader["Name"] as string;
-                                oneTest.Age = (int)reader["Age"];
-
-                                userTest.Id = (int)reader["Id"];
+                                userTest.Id = (int)reader["UserId"];
                                 userTest.FirstName = reader["FirstName"] as string;
                                 userTest.LastName = reader["LastName"] as string;
                                 userTest.Address = reader["Address"] as string;
                                 userTest.FkOneToTestId = (int)reader["FkOneToTestId"];
 
-                                OneToTest oneTestTest;
-                                if (!lookup.TryGetValue(oneTest.Id, out oneTestTest))
-                                {
-                                    lookup.Add(oneTest.Id, oneTestTest = oneTest);
-                                    oneToTests.Add(oneTestTest);
-                                }
-                                oneTestTest.UserTests.Add(userTest);
+                                oneTest.UserTests.Add(userTest);
                             }
                         }
                     }

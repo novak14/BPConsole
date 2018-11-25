@@ -125,15 +125,15 @@ namespace AccessFacade.Dal.Repository.Implementation
             }
         }
 
-        public void SelectResults(string dapper, string ado, string efCore)
+        public void SelectResults(string dapper, string ado, string efCore, string type)
         {
-            string sql = @"INSERT INTO SelectResults(DapperSync, AdoSync, EfCoreSync) VALUES(@DapperSync, @AdoSync, @EfCoreSync)";
+            string sql = @"INSERT INTO SelectResults(DapperSync, AdoSync, EfCoreSync, Type) VALUES(@DapperSync, @AdoSync, @EfCoreSync, @Type)";
 
             using (var connection = new SqlConnection(options.connectionString))
             {
                 try
                 {
-                    var tmp = connection.Execute(sql, new { DapperSync = dapper, AdoSync = ado, EfCoreSync = efCore });
+                    var tmp = connection.Execute(sql, new { DapperSync = dapper, AdoSync = ado, EfCoreSync = efCore, Type = type });
                 }
                 catch (Exception ex)
                 {

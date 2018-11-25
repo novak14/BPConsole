@@ -15,9 +15,9 @@ namespace AccessFacade.Business
             this.resultHelp = resultHelp;
         }
 
-        public void InsertSelectResult(string[] times)
+        public void InsertSelectResult(string[] times, string type)
         {
-            resultHelp.SelectResults(times[0], times[1], times[2]);
+            resultHelp.SelectResults(times[0], times[1], times[2], type);
         }
 
         public void DeleteInsert()

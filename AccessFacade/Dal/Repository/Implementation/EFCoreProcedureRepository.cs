@@ -71,5 +71,22 @@ namespace AccessFacade.Dal.Repository.Implementation
                 throw new Exception(nameof(ex));
             }
         }
+
+
+        public void TestDb()
+        {
+            using (var contex = new TestDbContext())
+            {
+                try
+                {
+                    var userTest = context.UserTest.FromSql("dbo.selectProcedure").ToList();
+
+                }
+                catch (Exception ex)
+                {
+                    throw new Exception(nameof(ex));
+                }
+            }
+        }
     }
 }

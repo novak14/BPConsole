@@ -48,22 +48,24 @@ namespace AccessFacade.Dal.Repository.Implementation
         {
             using (SqlConnection connection = new SqlConnection(options.connectionString))
             {
-                SqlCommand command = new SqlCommand("dbo.insertProcedure", connection);
-                try
+                using (SqlCommand command = new SqlCommand("dbo.insertProcedure", connection))
                 {
-                    command.CommandType = CommandType.StoredProcedure;
+                    try
+                    {
+                        command.CommandType = CommandType.StoredProcedure;
 
-                    command.Parameters.Add("@FirstName", SqlDbType.VarChar, 50).Value = FirstName;
-                    command.Parameters.Add("@LastName", SqlDbType.VarChar, 50).Value = LastName;
-                    command.Parameters.Add("@Address", SqlDbType.VarChar, 50).Value = Address;
-                    command.Parameters.Add("@FkOneToTestId", SqlDbType.Int).Value = FkOneToTestId;
+                        command.Parameters.Add("@FirstName", SqlDbType.VarChar, 50).Value = FirstName;
+                        command.Parameters.Add("@LastName", SqlDbType.VarChar, 50).Value = LastName;
+                        command.Parameters.Add("@Address", SqlDbType.VarChar, 50).Value = Address;
+                        command.Parameters.Add("@FkOneToTestId", SqlDbType.Int).Value = FkOneToTestId;
 
-                    connection.Open();
-                    var affRows = command.ExecuteNonQuery();
-                }
-                catch (Exception ex)
-                {
-                    throw new Exception(ex.ToString());
+                        connection.Open();
+                        var affRows = command.ExecuteNonQuery();
+                    }
+                    catch (Exception ex)
+                    {
+                        throw new Exception(ex.ToString());
+                    }
                 }
             }
         }
@@ -75,31 +77,33 @@ namespace AccessFacade.Dal.Repository.Implementation
 
             using (SqlConnection connection = new SqlConnection(options.connectionString))
             {
-                SqlCommand command = new SqlCommand("dbo.selectProcedure", connection);
-                try
+                using (SqlCommand command = new SqlCommand("dbo.selectProcedure", connection))
                 {
-                    connection.Open();
-                    command.CommandType = CommandType.StoredProcedure;
-
-                    using (SqlDataReader reader = command.ExecuteReader())
+                    try
                     {
-                        while (reader.Read())
+                        connection.Open();
+                        command.CommandType = CommandType.StoredProcedure;
+
+                        using (SqlDataReader reader = command.ExecuteReader())
                         {
-                            UserTest userTest = new UserTest();
+                            while (reader.Read())
+                            {
+                                UserTest userTest = new UserTest();
 
-                            userTest.Id = (int)reader["Id"];
-                            userTest.FirstName = reader["FirstName"] as string;
-                            userTest.LastName = reader["LastName"] as string;
-                            userTest.Address = reader["Address"] as string;
-                            userTest.FkOneToTestId = (int)reader["FkOneToTestId"];
+                                userTest.Id = (int)reader["Id"];
+                                userTest.FirstName = reader["FirstName"] as string;
+                                userTest.LastName = reader["LastName"] as string;
+                                userTest.Address = reader["Address"] as string;
+                                userTest.FkOneToTestId = (int)reader["FkOneToTestId"];
 
-                            userTests.Add(userTest);
+                                userTests.Add(userTest);
+                            }
                         }
                     }
-                }
-                catch (Exception ex)
-                {
-                    throw new Exception(ex.ToString());
+                    catch (Exception ex)
+                    {
+                        throw new Exception(ex.ToString());
+                    }
                 }
             }
             #endregion

@@ -23,6 +23,19 @@ namespace AccessFacade.Business
             this.eFCoreProcedureRepository = eFCoreProcedureRepository;
         }
 
+        public string TestSync()
+        {
+            eFCoreSyncRepository.TestDb();
+            return "test";
+        }
+
+        public string TestProc()
+        {
+            eFCoreProcedureRepository.TestDb();
+            return "test";
+        }
+
+
         #region sync
         // Synchronize EfCore
         public string SelectEFCoreSync()

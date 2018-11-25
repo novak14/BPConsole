@@ -6,5 +6,6 @@ namespace AccessFacade.Dal.Repository.Abstraction
 {
     public interface IEFCoreProcedureRepository : BusinessObject
     {
+        void TestDb();
     }
 }

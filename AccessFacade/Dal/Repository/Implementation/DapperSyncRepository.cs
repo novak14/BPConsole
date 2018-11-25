@@ -72,7 +72,18 @@ namespace AccessFacade.Dal.Repository.Implementation
             #endregion
 
             #region oneToMany
-            string sqlOneToMany = @"SELECT * FROM OneToTest INNER JOIN UserTest ON OneToTest.Id = UserTest.FkOneToTestId";
+            string sqlOneToMany = @"SELECT 
+                                OneToTest.Id,
+                                OneToTest.Name,
+                                OneToTest.Age,
+                                UserTest.Id,
+                                UserTest.FirstName,
+                                UserTest.LastName,
+                                UserTest.Address,
+                                UserTest.FkOneToTestId
+                                FROM OneToTest 
+                            INNER JOIN UserTest 
+                            ON OneToTest.Id = UserTest.FkOneToTestId";
 
             using (var connection = new SqlConnection(options.connectionString))
             {

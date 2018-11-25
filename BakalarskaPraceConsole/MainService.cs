@@ -31,9 +31,11 @@ namespace BakalarskaPraceConsole
         public void Initialize()
         {
             accessFacadeService.OpenConnectionPool();
-            string efCoreSync = eFCoreService.SelectEFCoreSync();
-            string dapperSync = dapperService.SelectDapperSync();
-            string adoSync = adoService.SelectAdoSync();
+
+            //string efCoreProcedure = eFCoreService.TestProc();
+            //string efCoreSync = eFCoreService.TestSync();
+            //string dapperSync = dapperService.SelectDapperSync();
+            //string adoSync = adoService.SelectAdoSync();
         }
 
         public string[] GetSync()
@@ -43,14 +45,6 @@ namespace BakalarskaPraceConsole
             Stopwatch ado = new Stopwatch();
             Stopwatch efCore = new Stopwatch();
 
-            efCore.Start();
-            for (int i = 0; i < 1000; i++)
-            {
-                string efCoreSync = eFCoreService.SelectEFCoreSync();
-            }
-            efCore.Stop();
-            times[2] = efCore.Elapsed.ToString();
-
             dapper.Start();
             for (int i = 0; i < 1000; i++)
             {
@@ -58,7 +52,6 @@ namespace BakalarskaPraceConsole
             }
             dapper.Stop();
             times[0] = dapper.Elapsed.ToString();
-
 
             ado.Start();
             for (int i = 0; i < 1000; i++)
@@ -68,9 +61,17 @@ namespace BakalarskaPraceConsole
             ado.Stop();
             times[1] = ado.Elapsed.ToString();
 
+            efCore.Start();
+            for (int i = 0; i < 1000; i++)
+            {
+                string efCoreSync = eFCoreService.TestSync();
+            }
+            efCore.Stop();
+            times[2] = efCore.Elapsed.ToString();
+            //times[0] = string.Empty;
 
+            accessFacadeService.InsertSelectResult(times, "synchronize");
             return times;
-            //accessFacadeService.InsertSelectResult(times);
         }
 
         public async Task<string[]> GetAsync()
@@ -114,14 +115,6 @@ namespace BakalarskaPraceConsole
             Stopwatch ado = new Stopwatch();
             Stopwatch efCore = new Stopwatch();
 
-            efCore.Start();
-            for (int i = 0; i < 1000; i++)
-            {
-                string efCoreProcedure = eFCoreService.SelectEFCoreProcedure();
-            }
-            efCore.Stop();
-            times[2] = efCore.Elapsed.ToString();
-
             dapper.Start();
             for (int i = 0; i < 1000; i++)
             {
@@ -138,6 +131,16 @@ namespace BakalarskaPraceConsole
             ado.Stop();
             times[1] = ado.Elapsed.ToString();
 
+            efCore.Start();
+            for (int i = 0; i < 1000; i++)
+            {
+                string efCoreProcedure = eFCoreService.TestProc();
+            }
+            efCore.Stop();
+            times[2] = efCore.Elapsed.ToString();
+            //times[2] = string.Empty;
+
+            accessFacadeService.InsertSelectResult(times, "procedure");
             return times;
         }
 
