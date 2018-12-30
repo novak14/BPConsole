@@ -50,7 +50,7 @@ namespace AccessFacade.Dal.Repository.Implementation
         {
             try
             {
-                var userTest = context.UserTest.FromSql("dbo.selectProcedure").ToList();
+                var userTest = context.UserTest.FromSql("dbo.selectManyProcedure").ToList();
 
             }
             catch (Exception ex)

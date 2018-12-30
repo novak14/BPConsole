@@ -77,7 +77,7 @@ namespace AccessFacade.Dal.Repository.Implementation
 
             using (SqlConnection connection = new SqlConnection(options.connectionString))
             {
-                using (SqlCommand command = new SqlCommand("dbo.selectProcedure", connection))
+                using (SqlCommand command = new SqlCommand("dbo.selectManyProcedure", connection))
                 {
                     try
                     {

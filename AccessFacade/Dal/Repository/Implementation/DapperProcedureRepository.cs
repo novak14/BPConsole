@@ -31,7 +31,7 @@ namespace AccessFacade.Dal.Repository.Implementation
             {
                 try
                 {
-                    var tmp = connection.Query<UserTest>("dbo.selectProcedure", commandType: CommandType.StoredProcedure).ToList();
+                    var tmp = connection.Query<UserTest>("dbo.selectManyProcedure", commandType: CommandType.StoredProcedure).ToList();
                 }
                 catch (Exception ex)
                 {

@@ -134,7 +134,7 @@ namespace BakalarskaPraceConsole
             efCore.Start();
             for (int i = 0; i < 1000; i++)
             {
-                string efCoreProcedure = eFCoreService.TestProc();
+                string efCoreProcedure = eFCoreService.SelectEFCoreProcedure();
             }
             efCore.Stop();
             times[2] = efCore.Elapsed.ToString();

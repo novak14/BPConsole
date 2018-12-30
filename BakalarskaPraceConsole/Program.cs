@@ -14,7 +14,7 @@ namespace BakalarskaPraceConsole
         public static void Main(string[] args)
         {
             var serviceProvider = new ServiceCollection()
-                .AddOptions()
+               .AddOptions()
                .AddSingleton<IMainService, MainService>()
                .AddModuleAccessFacade(o => o.connectionString = connection)
                .BuildServiceProvider();
@@ -33,7 +33,6 @@ namespace BakalarskaPraceConsole
             //Delete(tests);
             //DeleteAsync(tests).Wait();
 
-
             Console.ReadLine();
         }
 
@@ -46,9 +45,9 @@ namespace BakalarskaPraceConsole
         {
             string[] times;
 
-            Console.WriteLine("------------Select------------");
-            times = mainService.GetSync();
-            Write(times);
+            //Console.WriteLine("------------Select------------");
+            //times = mainService.GetSync();
+            //Write(times);
 
             Console.WriteLine("\n------------SelectProcedure------------");
             times = mainService.GetProc();
