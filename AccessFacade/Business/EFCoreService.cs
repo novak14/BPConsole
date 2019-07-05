@@ -46,23 +46,21 @@ namespace AccessFacade.Business
 
         public string UpdateEFCoreSync(string FirstName, int id)
         {
-            eFCoreSyncRepository.Update(new UserTestUpdate(FirstName, id));
+            eFCoreSyncRepository.Update(FirstName, id);
 
             return "test";
         }
 
         public string InsertEFCoreSync(string FirstName, string LastName, string Address, int FkOneToTestId)
         {
-            UserTestInsert userTestInsert = new UserTestInsert(FirstName, LastName, Address, FkOneToTestId);
-            eFCoreSyncRepository.Insert(userTestInsert);
+            eFCoreSyncRepository.Insert(FirstName, LastName, Address, FkOneToTestId);
 
             return "test";
         }
 
         public string DeleteEFCoreSync(int id)
         {
-            UserTestDelete userTestDelete = new UserTestDelete(id);
-            eFCoreSyncRepository.Delete(userTestDelete);
+            eFCoreSyncRepository.Delete(id);
 
             return "test";
         }
@@ -78,24 +76,21 @@ namespace AccessFacade.Business
 
         public async Task<string> UpdateEFCoreASync(string FirstName, int id)
         {
-            UserTestUpdate userTestUpdate = new UserTestUpdate(FirstName, id);
-            await eFCoreASyncRepository.UpdateAsync(userTestUpdate);
+            await eFCoreASyncRepository.UpdateAsync(FirstName, id);
 
             return "test";
         }
 
         public async Task<string> InsertEFCoreASync(string FirstName, string LastName, string Address, int FkOneToTestId)
         {
-            UserTestInsert userTestInsert = new UserTestInsert(FirstName, LastName, Address, FkOneToTestId);
-            await eFCoreASyncRepository.InsertAsync(userTestInsert);
+            await eFCoreASyncRepository.InsertAsync(FirstName, LastName, Address, FkOneToTestId);
 
             return "test";
         }
 
         public async Task<string> DeleteEFCoreASync(int id)
         {
-            UserTestDelete userTestDelete = new UserTestDelete(id);
-            await eFCoreASyncRepository.DeleteAsync(userTestDelete);
+            await eFCoreASyncRepository.DeleteAsync(id);
 
             return "test";
         }

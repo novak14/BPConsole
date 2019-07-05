@@ -23,23 +23,6 @@ namespace AccessFacade.Dal.Repository.Implementation
             this.options = options.Value;
         }
 
-        public void DeleteResults(string dapper, string ado, string efCore)
-        {
-            string sql = @"INSERT INTO DeleteResults(DapperSync, AdoSync, EfCoreSync) VALUES(@DapperSync, @AdoSync, @EfCoreSync)";
-
-            using (var connection = new SqlConnection(options.connectionString))
-            {
-                try
-                {
-                    var tmp = connection.Execute(sql, new { DapperSync = dapper, AdoSync = ado, EfCoreSync = efCore });
-                }
-                catch (Exception ex)
-                {
-                    throw new Exception(nameof(ex));
-                }
-            }
-        }
-
         public void DeleteTest()
         {
             string sql = @"DELETE FROM UserTestInsert";
@@ -66,23 +49,6 @@ namespace AccessFacade.Dal.Repository.Implementation
                 try
                 {
                     var tmp = await connection.ExecuteAsync(sql);
-                }
-                catch (Exception ex)
-                {
-                    throw new Exception(nameof(ex));
-                }
-            }
-        }
-
-        public void InsertResults(string dapper, string ado, string efCore)
-        {
-            string sql = @"INSERT INTO InsertResults(DapperSync, AdoSync, EfCoreSync) VALUES(@DapperSync, @AdoSync, @EfCoreSync)";
-
-            using (var connection = new SqlConnection(options.connectionString))
-            {
-                try
-                {
-                    var tmp = connection.Execute(sql, new { DapperSync = dapper, AdoSync = ado, EfCoreSync = efCore });
                 }
                 catch (Exception ex)
                 {
@@ -127,13 +93,13 @@ namespace AccessFacade.Dal.Repository.Implementation
 
         public void SelectResults(string dapper, string ado, string efCore, string type)
         {
-            string sql = @"INSERT INTO SelectResults(DapperSync, AdoSync, EfCoreSync, Type) VALUES(@DapperSync, @AdoSync, @EfCoreSync, @Type)";
+            string sql = @"INSERT INTO SelectResults(Dapper, Ado, EfCore, Type, Date) VALUES(@Dapper, @Ado, @EfCore, @Type, @Date)";
 
             using (var connection = new SqlConnection(options.connectionString))
             {
                 try
                 {
-                    var tmp = connection.Execute(sql, new { DapperSync = dapper, AdoSync = ado, EfCoreSync = efCore, Type = type });
+                    var tmp = connection.Execute(sql, new { Dapper = dapper, Ado = ado, EfCore = efCore, Type = type, Date = DateTime.Now });
                 }
                 catch (Exception ex)
                 {
@@ -142,15 +108,49 @@ namespace AccessFacade.Dal.Repository.Implementation
             }
         }
 
-        public void UpdateResults(string dapper, string ado, string efCore)
+        public void InsertResults(string dapper, string ado, string efCore, string type)
         {
-            string sql = @"INSERT INTO UpdateResults(DapperSync, AdoSync, EfCoreSync) VALUES(@DapperSync, @AdoSync, @EfCoreSync)";
+            string sql = @"INSERT INTO InsertResults(Dapper, Ado, EfCore, Type, Date) VALUES(@Dapper, @Ado, @EfCore, @Type, @Date)";
 
             using (var connection = new SqlConnection(options.connectionString))
             {
                 try
                 {
-                    var tmp = connection.Execute(sql, new { DapperSync = dapper, AdoSync = ado, EfCoreSync = efCore });
+                    var tmp = connection.Execute(sql, new { Dapper = dapper, Ado = ado, EfCore = efCore, Type = type, Date = DateTime.Now });
+                }
+                catch (Exception ex)
+                {
+                    throw new Exception(nameof(ex));
+                }
+            }
+        }
+
+        public void UpdateResults(string dapper, string ado, string efCore, string type)
+        {
+            string sql = @"INSERT INTO UpdateResults(Dapper, Ado, EfCore, Type, Date) VALUES(@Dapper, @Ado, @EfCore, @Type, @Date)";
+
+            using (var connection = new SqlConnection(options.connectionString))
+            {
+                try
+                {
+                    var tmp = connection.Execute(sql, new { Dapper = dapper, Ado = ado, EfCore = efCore, Type = type, Date = DateTime.Now });
+                }
+                catch (Exception ex)
+                {
+                    throw new Exception(nameof(ex));
+                }
+            }
+        }
+
+        public void DeleteResults(string dapper, string ado, string efCore, string type)
+        {
+            string sql = @"INSERT INTO DeleteResults(Dapper, Ado, EfCore, Type, Date) VALUES(@Dapper, @Ado, @EfCore, @Type, @Date)";
+
+            using (var connection = new SqlConnection(options.connectionString))
+            {
+                try
+                {
+                    var tmp = connection.Execute(sql, new { Dapper = dapper, Ado = ado, EfCore = efCore, Type = type, Date = DateTime.Now });
                 }
                 catch (Exception ex)
                 {

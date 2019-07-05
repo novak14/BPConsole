@@ -9,8 +9,8 @@ namespace BakalarskaPraceConsole
 {
     public class Program
     {
-        private static string connection = "Server=(localdb)\\mssqllocaldb;Database=BakalarskaPrace;Trusted_Connection=True;MultipleActiveResultSets=true";
-
+        private static string connection = "Server=localhost;Database=BakalarskaPrace;Trusted_Connection=True;";
+        //"Server=localhost;Database=BakalarskaPrace;Trusted_Connection=True;"
         public static void Main(string[] args)
         {
             var serviceProvider = new ServiceCollection()
@@ -24,15 +24,41 @@ namespace BakalarskaPraceConsole
             var tests = serviceProvider.GetService<IMainService>();
             tests.Initialize();
 
-            Select(tests);
-            //SelectAsync(tests).Wait();
-            //Update(tests);
-            //UpdateAsync(tests).Wait();
-            //Insert(tests);
-            //InsertAsync(tests).Wait();
-            //Delete(tests);
-            //DeleteAsync(tests).Wait();
+            Console.WriteLine("Který test si přeješ spustit\n1 - Select\n2 - SelectAsync\n3 - Update\n4 - UpdateAsync\n5 - Insert\n6 - InsertAsync\n7 - Delete\n8 - DeleteAsync");
+            int choosedTest;
+            int.TryParse(Console.ReadLine(), out choosedTest);
 
+
+            switch (choosedTest)
+            {
+                case 1:
+                    Select(tests);
+                    break;
+                case 2:
+                    SelectAsync(tests).Wait();
+                    break;
+                case 3:
+                    Update(tests);
+                    break;
+                case 4:
+                    UpdateAsync(tests).Wait();
+                    break;
+                case 5:
+                    Insert(tests);
+                    break;
+                case 6:
+                    InsertAsync(tests).Wait();
+                    break;
+                case 7:
+                    Delete(tests);
+                    break;
+                case 8:
+                    DeleteAsync(tests).Wait();
+                    break;
+                default:
+                    Console.WriteLine("Špatně vybráno");
+                    break;
+            }
             Console.ReadLine();
         }
 
@@ -45,12 +71,23 @@ namespace BakalarskaPraceConsole
         {
             string[] times;
 
-            //Console.WriteLine("------------Select------------");
-            //times = mainService.GetSync();
-            //Write(times);
-
-            Console.WriteLine("\n------------SelectProcedure------------");
-            times = mainService.GetProc();
+            Console.WriteLine("Který test chceš přesně\n1 - Synchronize\n2 - Procedure");
+            int choosedMethod;
+            int.TryParse(Console.ReadLine(), out choosedMethod);
+            switch(choosedMethod)
+            {
+                case 1:
+                    Console.WriteLine("------------Select------------");
+                    times = mainService.GetSync();
+                    break;
+                case 2:
+                    Console.WriteLine("\n------------SelectProcedure------------");
+                    times = mainService.GetProc();
+                    break;
+                default:
+                    times = null;
+                    break;
+            }            
             Write(times);
         }
 
@@ -66,13 +103,23 @@ namespace BakalarskaPraceConsole
         public static void Insert(IMainService mainService)
         {
             string[] times;
-
-            Console.WriteLine("\n------------Insert------------");
-            times = mainService.InsertSync();
-            Write(times);
-
-            Console.WriteLine("\n------------InsertProcedure------------");
-            times = mainService.InsertProc();
+            Console.WriteLine("Který test chceš přesně\n1 - Synchronize\n2 - Procedure");
+            int choosedMethod;
+            int.TryParse(Console.ReadLine(), out choosedMethod);
+            switch (choosedMethod)
+            {
+                case 1:
+                    Console.WriteLine("\n------------Insert------------");
+                    times = mainService.InsertSync();
+                    break;
+                case 2:
+                    Console.WriteLine("\n------------InsertProcedure------------");
+                    times = mainService.InsertProc();
+                    break;
+                default:
+                    times = null;
+                    break;
+            }            
             Write(times);
         }
 
@@ -88,13 +135,23 @@ namespace BakalarskaPraceConsole
         public static void Update(IMainService mainService)
         {
             string[] times;
-
-            Console.WriteLine("\n------------Update------------");
-            times = mainService.UpdateSync();
-            Write(times);
-
-            Console.WriteLine("\n------------UpdateProcedure------------");
-            times = mainService.UpdateProc();
+            Console.WriteLine("Který test chceš přesně\n1 - Synchronize\n2 - Procedure");
+            int choosedMethod;
+            int.TryParse(Console.ReadLine(), out choosedMethod);
+            switch (choosedMethod)
+            {
+                case 1:
+                    Console.WriteLine("\n------------Update------------");
+                    times = mainService.UpdateSync();
+                    break;
+                case 2:
+                    Console.WriteLine("\n------------UpdateProcedure------------");
+                    times = mainService.UpdateProc();
+                    break;
+                default:
+                    times = null;
+                    break;
+            }
             Write(times);
         }
 
@@ -110,12 +167,23 @@ namespace BakalarskaPraceConsole
         public static void Delete(IMainService mainService)
         {
             string[] times;
-            Console.WriteLine("\n------------Delete------------");
-            times = mainService.DeleteSync();
-            Write(times);
-
-            Console.WriteLine("\n------------DeleteProcedure------------");
-            times = mainService.DeleteProc();
+            Console.WriteLine("Který test chceš přesně\n1 - Synchronize\n2 - Procedure");
+            int choosedMethod;
+            int.TryParse(Console.ReadLine(), out choosedMethod);
+            switch (choosedMethod)
+            {
+                case 1:
+                    Console.WriteLine("\n------------Delete------------");
+                    times = mainService.DeleteSync();
+                    break;
+                case 2:
+                    Console.WriteLine("\n------------DeleteProcedure------------");
+                    times = mainService.DeleteProc();
+                    break;
+                default:
+                    times = null;
+                    break;
+            }
             Write(times);
         }
 

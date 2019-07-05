@@ -31,11 +31,6 @@ namespace BakalarskaPraceConsole
         public void Initialize()
         {
             accessFacadeService.OpenConnectionPool();
-
-            //string efCoreProcedure = eFCoreService.TestProc();
-            //string efCoreSync = eFCoreService.TestSync();
-            //string dapperSync = dapperService.SelectDapperSync();
-            //string adoSync = adoService.SelectAdoSync();
         }
 
         public string[] GetSync()
@@ -45,29 +40,32 @@ namespace BakalarskaPraceConsole
             Stopwatch ado = new Stopwatch();
             Stopwatch efCore = new Stopwatch();
 
-            dapper.Start();
-            for (int i = 0; i < 1000; i++)
-            {
-                string dapperSync = dapperService.SelectDapperSync();
-            }
-            dapper.Stop();
-            times[0] = dapper.Elapsed.ToString();
-
-            ado.Start();
-            for (int i = 0; i < 1000; i++)
-            {
-                string adoSync = adoService.SelectAdoSync();
-            }
-            ado.Stop();
-            times[1] = ado.Elapsed.ToString();
-
             efCore.Start();
             for (int i = 0; i < 1000; i++)
             {
-                string efCoreSync = eFCoreService.TestSync();
+                var efCoreSync = eFCoreService.SelectEFCoreSync();
             }
             efCore.Stop();
             times[2] = efCore.Elapsed.ToString();
+
+            //ado.Start();
+            //for (int i = 0; i < 1000; i++)
+            //{
+            //    var adoSync = adoService.SelectAdoSync();
+            //}
+            //ado.Stop();
+            //times[1] = ado.Elapsed.ToString();
+
+            //dapper.Start();
+            //for (int i = 0; i < 1000; i++)
+            //{
+            //    var dapperSync = dapperService.SelectDapperSync();
+            //}
+            //dapper.Stop();
+            //times[0] = dapper.Elapsed.ToString();
+
+
+
             //times[0] = string.Empty;
 
             accessFacadeService.InsertSelectResult(times, "synchronize");
@@ -81,29 +79,32 @@ namespace BakalarskaPraceConsole
             Stopwatch ado = new Stopwatch();
             Stopwatch efCore = new Stopwatch();
 
-            dapper.Start();
-            for (int i = 0; i < 1000; i++)
-            {
-                var dapperASync = await dapperService.SelectDapperASync();
-            }
-            dapper.Stop();
-            times[0] = dapper.Elapsed.ToString();
-
-            ado.Start();
-            for (int i = 0; i < 1000; i++)
-            {
-                string adoAsync = await adoService.SelectAdoASync();
-            }
-            ado.Stop();
-            times[1] = ado.Elapsed.ToString();
+            //dapper.Start();
+            //for (int i = 0; i < 1000; i++)
+            //{
+            //    var dapperASync = await dapperService.SelectDapperASync();
+            //}
+            //dapper.Stop();
+            //times[0] = dapper.Elapsed.ToString();
 
             efCore.Start();
             for (int i = 0; i < 1000; i++)
             {
-                string efCoreAsync = await eFCoreService.SelectEFCoreASync();
+                var efCoreAsync = await eFCoreService.SelectEFCoreASync();
             }
             efCore.Stop();
             times[2] = efCore.Elapsed.ToString();
+
+            //ado.Start();
+            //for (int i = 0; i < 1000; i++)
+            //{
+            //    var adoAsync = await adoService.SelectAdoASync();
+            //}
+            //ado.Stop();
+            //times[1] = ado.Elapsed.ToString();
+
+
+            accessFacadeService.InsertSelectResult(times, "asynchronize");
 
             return times;
         }
@@ -115,30 +116,32 @@ namespace BakalarskaPraceConsole
             Stopwatch ado = new Stopwatch();
             Stopwatch efCore = new Stopwatch();
 
-            dapper.Start();
-            for (int i = 0; i < 1000; i++)
-            {
-                string dapperProcedure = dapperService.SelectDapperProcedure();
-            }
-            dapper.Stop();
-            times[0] = dapper.Elapsed.ToString();
+            //dapper.Start();
+            //for (int i = 0; i < 1000; i++)
+            //{
+            //    var dapperProcedure = dapperService.SelectDapperProcedure();
+            //}
+            //dapper.Stop();
+            //times[0] = dapper.Elapsed.ToString();
 
-            ado.Start();
-            for (int i = 0; i < 1000; i++)
-            {
-                string adoProcedure = adoService.SelectAdoProcedure();
-            }
-            ado.Stop();
-            times[1] = ado.Elapsed.ToString();
+            //ado.Start();
+            //for (int i = 0; i < 1000; i++)
+            //{
+            //    var adoProcedure = adoService.SelectAdoProcedure();
+            //}
+            //ado.Stop();
+            //times[1] = ado.Elapsed.ToString();
 
-            efCore.Start();
-            for (int i = 0; i < 1000; i++)
-            {
-                string efCoreProcedure = eFCoreService.SelectEFCoreProcedure();
-            }
-            efCore.Stop();
-            times[2] = efCore.Elapsed.ToString();
-            //times[2] = string.Empty;
+
+
+            //efCore.Start();
+            //for (int i = 0; i < 1000; i++)
+            //{
+            //    string efCoreProcedure = eFCoreService.SelectEFCoreProcedure();
+            //}
+            //efCore.Stop();
+            //times[2] = efCore.Elapsed.ToString();
+            times[2] = string.Empty;
 
             accessFacadeService.InsertSelectResult(times, "procedure");
             return times;
@@ -153,24 +156,15 @@ namespace BakalarskaPraceConsole
             Stopwatch ado = new Stopwatch();
             Stopwatch efCore = new Stopwatch();
 
-            DeleteToInsert();
             var collection = GenerateModelUser();
-            dapper.Start();
-            foreach (var item in collection)
-            {
-                string dapperSync = dapperService.InsertDapperSync(item.FirstName, item.LastName, item.Address, item.FkOneToTestId);
-            }
-            dapper.Stop();
-            times[0] = dapper.Elapsed.ToString();
-
-            DeleteToInsert();
-            ado.Start();
-            foreach (var item in collection)
-            {
-                string adoSync = adoService.InsertAdoSync(item.FirstName, item.LastName, item.Address, item.FkOneToTestId);
-            }
-            ado.Stop();
-            times[1] = ado.Elapsed.ToString();
+            //DeleteToInsert();
+            //ado.Start();
+            //foreach (var item in collection)
+            //{
+            //    string adoSync = adoService.InsertAdoSync(item.FirstName, item.LastName, item.Address, item.FkOneToTestId);
+            //}
+            //ado.Stop();
+            //times[1] = ado.Elapsed.ToString();
 
             DeleteToInsert();
             efCore.Start();
@@ -180,6 +174,20 @@ namespace BakalarskaPraceConsole
             }
             efCore.Stop();
             times[2] = efCore.Elapsed.ToString();
+
+            //DeleteToInsert();
+            //dapper.Start();
+            //foreach (var item in collection)
+            //{
+            //    string dapperSync = dapperService.InsertDapperSync(item.FirstName, item.LastName, item.Address, item.FkOneToTestId);
+            //}
+            //dapper.Stop();
+            //times[0] = dapper.Elapsed.ToString();
+
+
+
+
+            accessFacadeService.InsertInsertResult(times, "synchronize");
 
             return times;
         }
@@ -193,23 +201,14 @@ namespace BakalarskaPraceConsole
 
             var collection = GenerateModelUser();
 
-            await DeleteToInsertAsync();
-            dapper.Start();
-            foreach (var item in collection)
-            {
-                string dapperASync = await dapperService.InsertDapperASync(item.FirstName, item.LastName, item.Address, item.FkOneToTestId);
-            }
-            dapper.Stop();
-            times[0] = dapper.Elapsed.ToString();
-
-            await DeleteToInsertAsync();
-            ado.Start();
-            foreach (var item in collection)
-            {
-                string adoAsync = await adoService.InsertAdoASync(item.FirstName, item.LastName, item.Address, item.FkOneToTestId);
-            }
-            ado.Stop();
-            times[1] = ado.Elapsed.ToString();
+            //await DeleteToInsertAsync();
+            //ado.Start();
+            //foreach (var item in collection)
+            //{
+            //    string adoAsync = await adoService.InsertAdoASync(item.FirstName, item.LastName, item.Address, item.FkOneToTestId);
+            //}
+            //ado.Stop();
+            //times[1] = ado.Elapsed.ToString();
 
             await DeleteToInsertAsync();
             efCore.Start();
@@ -219,6 +218,18 @@ namespace BakalarskaPraceConsole
             }
             efCore.Stop();
             times[2] = efCore.Elapsed.ToString();
+
+            //await DeleteToInsertAsync();
+            //dapper.Start();
+            //foreach (var item in collection)
+            //{
+            //    string dapperASync = await dapperService.InsertDapperASync(item.FirstName, item.LastName, item.Address, item.FkOneToTestId);
+            //}
+            //dapper.Stop();
+            //times[0] = dapper.Elapsed.ToString();
+
+
+            accessFacadeService.InsertInsertResult(times, "asynchronize");
 
             return times;
         }
@@ -230,25 +241,16 @@ namespace BakalarskaPraceConsole
             Stopwatch ado = new Stopwatch();
             Stopwatch efCore = new Stopwatch();
 
-            DeleteToInsert();
             var collection = GenerateModelUser();
+            //DeleteToInsert();
+            //ado.Start();
+            //foreach (var item in collection)
+            //{
+            //    string adoProcedure = adoService.InsertAdoProcedure(item.FirstName, item.LastName, item.Address, item.FkOneToTestId);
+            //}
+            //ado.Stop();
+            //times[1] = ado.Elapsed.ToString();
 
-            dapper.Start();
-            foreach (var item in collection)
-            {
-                string dapperProcedure = dapperService.InsertDapperProcedure(item.FirstName, item.LastName, item.Address, item.FkOneToTestId);
-            }
-            dapper.Stop();
-            times[0] = dapper.Elapsed.ToString();
-
-            DeleteToInsert();
-            ado.Start();
-            foreach (var item in collection)
-            {
-                string adoProcedure = adoService.InsertAdoProcedure(item.FirstName, item.LastName, item.Address, item.FkOneToTestId);
-            }
-            ado.Stop();
-            times[1] = ado.Elapsed.ToString();
 
             DeleteToInsert();
             efCore.Start();
@@ -258,6 +260,18 @@ namespace BakalarskaPraceConsole
             }
             efCore.Stop();
             times[2] = efCore.Elapsed.ToString();
+
+            //DeleteToInsert();
+            //dapper.Start();
+            //foreach (var item in collection)
+            //{
+            //    string dapperProcedure = dapperService.InsertDapperProcedure(item.FirstName, item.LastName, item.Address, item.FkOneToTestId);
+            //}
+            //dapper.Stop();
+            //times[0] = dapper.Elapsed.ToString();
+
+
+            accessFacadeService.InsertInsertResult(times, "procedure");
 
             return times;
         }
@@ -271,23 +285,14 @@ namespace BakalarskaPraceConsole
 
             Random random = new Random();
 
-            dapper.Start();
-            for (int i = 1; i < 1000; i++)
-            {
-                var firstName = random.GenerateRandomFirstName();
-                string dapperSync = dapperService.UpdateDapperSync(firstName, i);
-            }
-            dapper.Stop();
-            times[0] = dapper.Elapsed.ToString();
-
-            ado.Start();
-            for (int i = 1; i < 1000; i++)
-            {
-                var firstName = random.GenerateRandomFirstName();
-                string adoSync = adoService.UpdateAdoSync(firstName, i);
-            }
-            ado.Stop();
-            times[1] = ado.Elapsed.ToString();
+            //ado.Start();
+            //for (int i = 1; i < 1000; i++)
+            //{
+            //    var firstName = random.GenerateRandomFirstName();
+            //    string adoSync = adoService.UpdateAdoSync(firstName, i);
+            //}
+            //ado.Stop();
+            //times[1] = ado.Elapsed.ToString();
 
             efCore.Start();
             for (int i = 1; i < 100; i++)
@@ -297,6 +302,19 @@ namespace BakalarskaPraceConsole
             }
             efCore.Stop();
             times[2] = efCore.Elapsed.ToString();
+
+            //dapper.Start();
+            //for (int i = 1; i < 1000; i++)
+            //{
+            //    var firstName = random.GenerateRandomFirstName();
+            //    string dapperSync = dapperService.UpdateDapperSync(firstName, i);
+            //}
+            //dapper.Stop();
+            //times[0] = dapper.Elapsed.ToString();
+
+
+
+            accessFacadeService.InsertUpdateResult(times, "synchronize");
 
             return times;
         }
@@ -310,32 +328,35 @@ namespace BakalarskaPraceConsole
 
             Random random = new Random();
 
-            dapper.Start();
-            for (int i = 0; i < 1000; i++)
-            {
-                var firstName = random.GenerateRandomFirstName();
-                string dapperASync = await dapperService.UpdateDapperASync(firstName, i);
-            }
-            dapper.Stop();
-            times[0] = dapper.Elapsed.ToString();
-
-            ado.Start();
-            for (int i = 0; i < 1000; i++)
-            {
-                var firstName = random.GenerateRandomFirstName();
-                string adoAsync = await adoService.UpdateAdoASync(firstName, i);
-            }
-            ado.Stop();
-            times[1] = ado.Elapsed.ToString();
+            //ado.Start();
+            //for (int i = 1; i <= 1000; i++)
+            //{
+            //    var firstName = random.GenerateRandomFirstName();
+            //    string adoAsync = await adoService.UpdateAdoASync(firstName, i);
+            //}
+            //ado.Stop();
+            //times[1] = ado.Elapsed.ToString();
 
             efCore.Start();
-            for (int i = 0; i < 1000; i++)
+            for (int i = 1; i <= 1000; i++)
             {
                 var firstName = random.GenerateRandomFirstName();
                 string efCoreAsync = await eFCoreService.UpdateEFCoreASync(firstName, i);
             }
             efCore.Stop();
             times[2] = efCore.Elapsed.ToString();
+
+            //dapper.Start();
+            //for (int i = 1; i <= 1000; i++)
+            //{
+            //    var firstName = random.GenerateRandomFirstName();
+            //    string dapperASync = await dapperService.UpdateDapperASync(firstName, i);
+            //}
+            //dapper.Stop();
+            //times[0] = dapper.Elapsed.ToString();
+
+
+            accessFacadeService.InsertUpdateResult(times, "asynchronize");
 
             return times;
         }
@@ -349,23 +370,14 @@ namespace BakalarskaPraceConsole
 
             Random random = new Random();
 
-            dapper.Start();
-            for (int i = 0; i < 1000; i++)
-            {
-                var firstName = random.GenerateRandomFirstName();
-                string dapperProcedure = dapperService.UpdateDapperProcedure(firstName, i);
-            }
-            dapper.Stop();
-            times[0] = dapper.Elapsed.ToString();
-
-            ado.Start();
-            for (int i = 0; i < 1000; i++)
-            {
-                var firstName = random.GenerateRandomFirstName();
-                string adoProcedure = adoService.UpdateAdoProcedure(firstName, i);
-            }
-            ado.Stop();
-            times[1] = ado.Elapsed.ToString();
+            //ado.Start();
+            //for (int i = 0; i < 1000; i++)
+            //{
+            //    var firstName = random.GenerateRandomFirstName();
+            //    string adoProcedure = adoService.UpdateAdoProcedure(firstName, i);
+            //}
+            //ado.Stop();
+            //times[1] = ado.Elapsed.ToString();
 
             efCore.Start();
             for (int i = 0; i < 1000; i++)
@@ -375,6 +387,19 @@ namespace BakalarskaPraceConsole
             }
             efCore.Stop();
             times[2] = efCore.Elapsed.ToString();
+
+            //dapper.Start();
+            //for (int i = 0; i < 1000; i++)
+            //{
+            //    var firstName = random.GenerateRandomFirstName();
+            //    string dapperProcedure = dapperService.UpdateDapperProcedure(firstName, i);
+            //}
+            //dapper.Stop();
+            //times[0] = dapper.Elapsed.ToString();
+
+
+
+            accessFacadeService.InsertUpdateResult(times, "procedure");
 
             return times;
         }
@@ -388,23 +413,14 @@ namespace BakalarskaPraceConsole
             Stopwatch ado = new Stopwatch();
             Stopwatch efCore = new Stopwatch();
 
-            InsertToDelete();
-            dapper.Start();
-            for (int i = 1; i <= 1000; i ++)
-            {
-                string dapperSync = dapperService.DeleteDapperSync(i);
-            }
-            dapper.Stop();
-            times[0] = dapper.Elapsed.ToString();
-
-            InsertToDelete();
-            ado.Start();
-            for (int i = 1; i <= 1000; i++)
-            {
-                string adoSync = adoService.DeleteAdoSync(i);
-            }
-            ado.Stop();
-            times[1] = ado.Elapsed.ToString();
+            //InsertToDelete();
+            //ado.Start();
+            //for (int i = 1; i <= 1000; i++)
+            //{
+            //    string adoSync = adoService.DeleteAdoSync(i);
+            //}
+            //ado.Stop();
+            //times[1] = ado.Elapsed.ToString();
 
             InsertToDelete();
             efCore.Start();
@@ -414,6 +430,19 @@ namespace BakalarskaPraceConsole
             }
             efCore.Stop();
             times[2] = efCore.Elapsed.ToString();
+
+            //InsertToDelete();
+            //dapper.Start();
+            //for (int i = 1; i <= 1000; i ++)
+            //{
+            //    string dapperSync = dapperService.DeleteDapperSync(i);
+            //}
+            //dapper.Stop();
+            //times[0] = dapper.Elapsed.ToString();
+
+
+
+            accessFacadeService.InsertDeleteResult(times, "synchronize");
 
             return times;
         }
@@ -425,23 +454,14 @@ namespace BakalarskaPraceConsole
             Stopwatch ado = new Stopwatch();
             Stopwatch efCore = new Stopwatch();
 
-            await InsertToDeleteAsync();
-            dapper.Start();
-            for (int i = 1; i <= 1000; i++)
-            {
-                string dapperASync = await dapperService.DeleteDapperASync(i);
-            }
-            dapper.Stop();
-            times[0] = dapper.Elapsed.ToString();
-
-            await InsertToDeleteAsync();
-            ado.Start();
-            for (int i = 1; i <= 1000; i++)
-            {
-                string adoAsync = await adoService.DeleteAdoASync(i);
-            }
-            ado.Stop();
-            times[1] = ado.Elapsed.ToString();
+            //await InsertToDeleteAsync();
+            //ado.Start();
+            //for (int i = 1; i <= 1000; i++)
+            //{
+            //    string adoAsync = await adoService.DeleteAdoASync(i);
+            //}
+            //ado.Stop();
+            //times[1] = ado.Elapsed.ToString();
 
             await InsertToDeleteAsync();
             efCore.Start();
@@ -451,6 +471,19 @@ namespace BakalarskaPraceConsole
             }
             efCore.Stop();
             times[2] = efCore.Elapsed.ToString();
+
+            //await InsertToDeleteAsync();
+            //dapper.Start();
+            //for (int i = 1; i <= 1000; i++)
+            //{
+            //    string dapperASync = await dapperService.DeleteDapperASync(i);
+            //}
+            //dapper.Stop();
+            //times[0] = dapper.Elapsed.ToString();
+
+
+
+            accessFacadeService.InsertDeleteResult(times, "asynchronize");
 
             return times;
         }
@@ -462,23 +495,14 @@ namespace BakalarskaPraceConsole
             Stopwatch ado = new Stopwatch();
             Stopwatch efCore = new Stopwatch();
 
-            InsertToDelete();
-            dapper.Start();
-            for (int i = 1; i <= 1000; i++)
-            {
-                string dapperProcedure = dapperService.DeleteDapperProcedure(i);
-            }
-            dapper.Stop();
-            times[0] = dapper.Elapsed.ToString();
-
-            InsertToDelete();
-            ado.Start();
-            for (int i = 1; i <= 1000; i++)
-            {
-                string adoProcedure = adoService.DeleteAdoProcedure(i);
-            }
-            ado.Stop();
-            times[1] = ado.Elapsed.ToString();
+            //InsertToDelete();
+            //ado.Start();
+            //for (int i = 1; i <= 1000; i++)
+            //{
+            //    string adoProcedure = adoService.DeleteAdoProcedure(i);
+            //}
+            //ado.Stop();
+            //times[1] = ado.Elapsed.ToString();
 
             InsertToDelete();
             efCore.Start();
@@ -488,6 +512,19 @@ namespace BakalarskaPraceConsole
             }
             efCore.Stop();
             times[2] = efCore.Elapsed.ToString();
+
+            //InsertToDelete();
+            //dapper.Start();
+            //for (int i = 1; i <= 1000; i++)
+            //{
+            //    string dapperProcedure = dapperService.DeleteDapperProcedure(i);
+            //}
+            //dapper.Stop();
+            //times[0] = dapper.Elapsed.ToString();
+
+
+
+            accessFacadeService.InsertDeleteResult(times, "procedure");
 
             return times;
         }

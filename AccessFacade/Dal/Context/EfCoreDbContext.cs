@@ -1,6 +1,8 @@
 ﻿using AccessFacade.Configuration;
 using AccessFacade.Dal.Entities;
+using JetBrains.Annotations;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Design;
 using Microsoft.Extensions.Options;
 using System;
 using System.Collections.Generic;
@@ -19,6 +21,10 @@ namespace AccessFacade.Dal.Context
                 throw new ArgumentNullException(nameof(options));
             }
             this.options2 = options2.Value;
+        }
+
+        public EfCoreDbContext(DbContextOptions<EfCoreDbContext> options) : base(options)
+        {
         }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
@@ -50,6 +56,17 @@ namespace AccessFacade.Dal.Context
         {
             ChangeTracker.DetectChanges();
             return base.SaveChanges();
+        }
+
+        public class ApplicationContextDbFactory : IDesignTimeDbContextFactory<EfCoreDbContext>
+        {
+            EfCoreDbContext IDesignTimeDbContextFactory<EfCoreDbContext>.CreateDbContext(string[] args)
+            {
+                var optionsBuilder = new DbContextOptionsBuilder<EfCoreDbContext>();
+                optionsBuilder.UseSqlServer<EfCoreDbContext>("Server=localhost;Database=BakalarskaPrace;Trusted_Connection=True;");
+
+                return new EfCoreDbContext(optionsBuilder.Options);
+            }
         }
     }
 }

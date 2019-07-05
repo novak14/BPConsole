@@ -1,5 +1,6 @@
 ﻿using AccessFacade.Configuration;
 using AccessFacade.Dal.Context;
+using AccessFacade.Dal.Entities;
 using AccessFacade.Dal.Repository.Abstraction;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
@@ -46,11 +47,17 @@ namespace AccessFacade.Dal.Repository.Implementation
             }
         }
 
-        public void Select()
+        public List<OneToTest> Select()
         {
+            // EF podporuje malo SELECT pro procedury proto se netestuje!!
             try
             {
-                var userTest = context.UserTest.FromSql("dbo.selectManyProcedure").ToList();
+                var userTest = context.OneToTest.FromSql("dbo.testDva");
+                var userTestsasdf = context.UserTest.FromSql("dbo.test");
+
+                return new List<OneToTest>();
+
+                //var test = userTest.Include(u => u.UserTests).ToList();
 
             }
             catch (Exception ex)
@@ -75,18 +82,18 @@ namespace AccessFacade.Dal.Repository.Implementation
 
         public void TestDb()
         {
-            using (var contex = new TestDbContext())
-            {
-                try
-                {
-                    var userTest = context.UserTest.FromSql("dbo.selectProcedure").ToList();
+            //using (var contex = new TestDbContext())
+            //{
+            //    try
+            //    {
+            //        var userTest = context.UserTest.FromSql("dbo.selectProcedure").ToList();
 
-                }
-                catch (Exception ex)
-                {
-                    throw new Exception(nameof(ex));
-                }
-            }
+            //    }
+            //    catch (Exception ex)
+            //    {
+            //        throw new Exception(nameof(ex));
+            //    }
+            //}
         }
     }
 }

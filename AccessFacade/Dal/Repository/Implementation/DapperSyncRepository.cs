@@ -60,7 +60,7 @@ namespace AccessFacade.Dal.Repository.Implementation
             }
         }
 
-        public void Select()
+        public List<OneToTest> Select()
         {
             #region normalSelect
             //string sql = @"SELECT * FROM UserTest";
@@ -87,21 +87,31 @@ namespace AccessFacade.Dal.Repository.Implementation
 
             using (var connection = new SqlConnection(options.connectionString))
             {
-                var lookup = new Dictionary<int, OneToTest>();
+                try
+                {
+                    var lookup = new Dictionary<int, OneToTest>();
 
-                var tmp = connection.Query<OneToTest, UserTest, OneToTest>(sqlOneToMany,
-                    (oneToTest, userTest) =>
-                    {
-                        OneToTest oneTest;
+                    var tmp = connection.Query<OneToTest, UserTest, OneToTest>(sqlOneToMany,
+                        (oneToTest, userTest) =>
+                        {
+                            OneToTest oneTest;
 
-                        if (!lookup.TryGetValue(oneToTest.Id, out oneTest))
-                            lookup.Add(oneToTest.Id, oneTest = oneToTest);
+                            if (!lookup.TryGetValue(oneToTest.Id, out oneTest))
+                                lookup.Add(oneToTest.Id, oneTest = oneToTest);
 
-                        if (userTest != null)
-                            oneTest.UserTests.Add(userTest);
+                            if (userTest != null)
+                                oneTest.UserTests.Add(userTest);
 
-                        return oneTest;
-                    }).Distinct().ToList();
+                            return oneTest;
+                        }).Distinct().ToList();
+
+                    return tmp;
+                }
+                catch (Exception ex)
+                {
+                    throw new Exception(nameof(ex));
+                }
+
             }
             #endregion
 

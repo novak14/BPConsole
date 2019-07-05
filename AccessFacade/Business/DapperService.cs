@@ -1,4 +1,5 @@
-﻿using AccessFacade.Dal.Repository.Abstraction;
+﻿using AccessFacade.Dal.Entities;
+using AccessFacade.Dal.Repository.Abstraction;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -25,10 +26,10 @@ namespace AccessFacade.Business
 
         #region sync
         // Synchronize Dapper
-        public string SelectDapperSync()
+        public List<OneToTest> SelectDapperSync()
         {
-            dapperSync.Select();
-            return "test";
+            var selectModel = dapperSync.Select();
+            return selectModel;
         }
 
         public string UpdateDapperSync(string FirstName, int id)
@@ -55,10 +56,10 @@ namespace AccessFacade.Business
 
         #region async
         // Asychronize Dapper
-        public async Task<string> SelectDapperASync()
+        public async Task<List<OneToTest>> SelectDapperASync()
         {
-            await dapperAsyncRepository.SelectAsync();
-            return "test";
+            var selectModel = await dapperAsyncRepository.SelectAsync();
+            return selectModel;
         }
 
         public async Task<string> UpdateDapperASync(string FirstName, int id)
@@ -85,11 +86,11 @@ namespace AccessFacade.Business
 
         #region procedure
         // Procedure Dapper
-        public string SelectDapperProcedure()
+        public List<OneToTest> SelectDapperProcedure()
         {
-            dapperProcedureRepository.Select();
+            var selectModel = dapperProcedureRepository.Select();
 
-            return "test";
+            return selectModel;
         }
 
         public string UpdateDapperProcedure(string FirstName, int id)

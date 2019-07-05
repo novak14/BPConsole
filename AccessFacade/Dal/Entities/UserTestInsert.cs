@@ -8,13 +8,13 @@ namespace AccessFacade.Dal.Entities
 {
     public class UserTestInsert
     {
-        public UserTestInsert(string FirstName, string LastName, string Address, int FkOneToTestId)
-        {
-            this.FirstName = FirstName;
-            this.LastName = LastName;
-            this.Address = Address;
-            this.FkOneToTestId = FkOneToTestId;
-        }
+        //public UserTestInsert(string FirstName, string LastName, string Address, int FkOneToTestId)
+        //{
+        //    this.FirstName = FirstName;
+        //    this.LastName = LastName;
+        //    this.Address = Address;
+        //    this.FkOneToTestId = FkOneToTestId;
+        //}
         [Key]
         public int Id { get; set; }
         public string FirstName { get; set; }

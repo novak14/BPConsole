@@ -66,10 +66,8 @@ namespace AccessFacade.Dal.Repository.Implementation
             }
         }
 
-        public void Select()
+        public List<OneToTest> Select()
         {
-            string queryOneToMany = "SELECT * FROM OneToTest INNER JOIN UserTest ON OneToTest.Id = UserTest.FkOneToTestId";
-
             string query = @"SELECT 
                                 OneToTest.Id,
                                 OneToTest.Name,
@@ -120,6 +118,7 @@ namespace AccessFacade.Dal.Repository.Implementation
 
                                 oneTest.UserTests.Add(userTest);
                             }
+                            return oneToTests;
                         }
                     }
                     catch (Exception ex)

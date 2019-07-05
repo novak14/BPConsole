@@ -23,27 +23,12 @@ namespace AccessFacade.Dal.Repository.Implementation
 
         public void Delete(int id)
         {
-            throw new NotImplementedException();
-        }
-
-        public void Delete(UserTestDelete userTestDelete)
-        {
             try
             {
-                context.UserTestDelete.Remove(userTestDelete);
-                context.SaveChanges();
-            }
-            catch (Exception ex)
-            {
-                throw new Exception(nameof(ex));
-            }
-        }
-
-        public void Insert(UserTestInsert userTestInsert)
-        {
-            try
-            {
-                context.UserTestInsert.Add(userTestInsert);
+                context.UserTestDelete.Remove(new UserTestDelete
+                {
+                    Id = id
+                });
                 context.SaveChanges();
             }
             catch (Exception ex)
@@ -54,28 +39,34 @@ namespace AccessFacade.Dal.Repository.Implementation
 
         public void Insert(string FirstName, string LastName, string Address, int FkOneToTestId)
         {
-            throw new NotImplementedException();
+            try
+            {
+                context.UserTestInsert.Add(new UserTestInsert
+                {
+                    FirstName = FirstName,
+                    LastName = LastName,
+                    Address = Address,
+                    FkOneToTestId = FkOneToTestId
+                });
+                context.SaveChanges();
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(nameof(ex));
+            }
         }
 
-        public void Select()
+        public List<OneToTest> Select()
         {
-            #region normalSelect
-            //var normalSelect = context.UserTest.ToList();
-            #endregion
-
-            #region oneToMany
-            //var test = context.UserTest
-            //    .Include(one => one.OneToTest)
-            //    .ToList();
-
-           
-            #endregion
             try
             {
                 var testOne = context.OneToTest
-               .Include(user => user.UserTests)
-               .AsNoTracking()
-               .ToList();
+                    .Where(o => o.UserTests.Where(u => u.FkOneToTestId == o.Id).Any())
+                    .Include(o => o.UserTests)
+                   .AsNoTracking()
+                   .ToList();
+
+                return testOne;
             }
             catch (Exception ex)
             {
@@ -85,14 +76,13 @@ namespace AccessFacade.Dal.Repository.Implementation
 
         public void Update(string FirstName, int id)
         {
-            throw new NotImplementedException();
-        }
-
-        public void Update(UserTestUpdate userTestUpdate)
-        {
             try
             {
-                context.UserTestUpdate.Update(userTestUpdate);
+                context.UserTestUpdate.Update(new UserTestUpdate
+                {
+                    Id = id,
+                    FirstName = "test"
+                });
                 context.SaveChanges();
             }
             catch (Exception ex)
@@ -106,20 +96,20 @@ namespace AccessFacade.Dal.Repository.Implementation
 
         public void TestDb()
         {
-            using (var contex = new TestDbContext())
-            {
-                try
-                {
-                    var testOne = context.OneToTest
-                   .Include(user => user.UserTests)
-                   .AsNoTracking()
-                   .ToList();
-                }
-                catch (Exception ex)
-                {
-                    throw new Exception(nameof(ex));
-                }
-            }
+            //using (var contex = new TestDbContext())
+            //{
+            //    try
+            //    {
+            //        var testOne = context.OneToTest
+            //       .Include(user => user.UserTests)
+            //       .AsNoTracking()
+            //       .ToList();
+            //    }
+            //    catch (Exception ex)
+            //    {
+            //        throw new Exception(nameof(ex));
+            //    }
+            //}
             
         }
     }

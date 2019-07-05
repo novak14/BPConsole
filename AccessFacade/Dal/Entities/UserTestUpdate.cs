@@ -7,11 +7,11 @@ namespace AccessFacade.Dal.Entities
 {
     public class UserTestUpdate
     {
-        public UserTestUpdate(string FirstName, int id)
-        {
-            this.Id = id;
-            this.FirstName = FirstName;
-        }
+        //public UserTestUpdate(string FirstName, int id)
+        //{
+        //    this.Id = id;
+        //    this.FirstName = FirstName;
+        //}
 
         [Key]
         public int Id { get; set; }

@@ -6,6 +6,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -20,17 +21,32 @@ namespace AccessFacade.Dal.Repository.Implementation
             this.context = context;
         }
 
-        public async Task DeleteAsync(UserTestDelete userTestDelete)
-        {
-            context.UserTestDelete.Remove(userTestDelete);
-            await context.SaveChangesAsync();
-        }       
-
-        public async Task InsertAsync(UserTestInsert userTestInsert)
+        public async Task<List<OneToTest>> SelectAsync()
         {
             try
             {
-                context.UserTestInsert.Add(userTestInsert);
+                var oneTo = await context.OneToTest
+                    .Where(o => o.UserTests.Where(u => u.FkOneToTestId == o.Id).Any())
+                    .Include(o => o.UserTests)
+                    .ToListAsync();
+
+                return oneTo;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(nameof(ex));
+            }
+        }
+
+        public async Task UpdateAsync(string FirstName, int id)
+        {
+            try
+            {
+                context.UserTestUpdate.Update(new UserTestUpdate
+                {
+                    Id = id,
+                    FirstName = "test"
+                });
                 await context.SaveChangesAsync();
             }
             catch (Exception ex)
@@ -39,23 +55,14 @@ namespace AccessFacade.Dal.Repository.Implementation
             }
         }
 
-        public async Task SelectAsync()
+        public async Task DeleteAsync(int id)
         {
             try
             {
-                var normalSelect = await context.UserTest.ToListAsync();
-            }
-            catch (Exception ex)
-            {
-                throw new Exception(nameof(ex));
-            }
-        }
-
-        public async Task UpdateAsync(UserTestUpdate userTestUpdate)
-        {
-            try
-            {
-                context.UserTestUpdate.Update(userTestUpdate);
+                context.UserTestDelete.Remove(new UserTestDelete
+                {
+                    Id = id
+                });
                 await context.SaveChangesAsync();
             }
             catch (Exception ex)
@@ -64,19 +71,23 @@ namespace AccessFacade.Dal.Repository.Implementation
             }
         }
 
-        public Task UpdateAsync(string FirstName, int id)
+        public async Task InsertAsync(string FirstName, string LastName, string Address, int FkOneToTestId)
         {
-            throw new NotImplementedException();
-        }
-
-        public Task DeleteAsync(int id)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task InsertAsync(string FirstName, string LastName, string Address, int FkOneToTestId)
-        {
-            throw new NotImplementedException();
+            try
+            {
+                await context.UserTestInsert.AddAsync(new UserTestInsert
+                {
+                    FirstName = FirstName,
+                    LastName = LastName,
+                    Address = Address,
+                    FkOneToTestId = FkOneToTestId
+                });
+                await context.SaveChangesAsync();
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(nameof(ex));
+            }
         }
     }
 }

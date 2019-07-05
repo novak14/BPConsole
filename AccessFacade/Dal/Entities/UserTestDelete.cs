@@ -7,10 +7,10 @@ namespace AccessFacade.Dal.Entities
 {
     public class UserTestDelete
     {
-        public UserTestDelete(int id)
-        {
-            this.Id = id;
-        }
+        //public UserTestDelete(int id)
+        //{
+        //    this.Id = id;
+        //}
 
         [Key]
         public int Id { get; set; }

@@ -25,19 +25,35 @@ namespace AccessFacade.Dal.Repository.Implementation
             this.options = options.Value;
         }
 
-        public void Select()
+        public List<OneToTest> Select()
         {
-            using (SqlConnection connection = new SqlConnection(options.connectionString))
-            {
                 try
                 {
-                    var tmp = connection.Query<UserTest>("dbo.selectManyProcedure", commandType: CommandType.StoredProcedure).ToList();
+                    using (var connection = new SqlConnection(options.connectionString))
+                    {
+                        var lookup = new Dictionary<int, OneToTest>();
+
+                        var tmp = connection.Query<OneToTest, UserTest, OneToTest>("dbo.selectManyProcedure",
+                            (oneToTest, userTest) =>
+                            {
+                                OneToTest oneTest;
+
+                                if (!lookup.TryGetValue(oneToTest.Id, out oneTest))
+                                    lookup.Add(oneToTest.Id, oneTest = oneToTest);
+
+                                if (userTest != null)
+                                    oneTest.UserTests.Add(userTest);
+
+                                return oneTest;
+                            }, splitOn: "UserTestId", commandType: CommandType.StoredProcedure).Distinct().ToList();
+
+                    return tmp;
+                    }
                 }
                 catch (Exception ex)
                 {
                     throw new Exception(nameof(ex));
                 }
-            }
         }
 
         public void Insert(string FirstName, string LastName, string Address, int FkOneToTestId)
@@ -46,8 +62,7 @@ namespace AccessFacade.Dal.Repository.Implementation
             {
                 try
                 {
-                    var tmp = connection.Query<UserTest>("dbo.insertProcedure",
-                    new { FirstName = FirstName, LastName = LastName, Address = Address, FkOneToTestId = FkOneToTestId },
+                    var tmp = connection.Query<UserTest>("dbo.insertProcedure", new { FirstName = FirstName, LastName = LastName, Address = Address, FkOneToTestId = FkOneToTestId },
                     commandType: CommandType.StoredProcedure).ToList();
                 }
                 catch (Exception ex)

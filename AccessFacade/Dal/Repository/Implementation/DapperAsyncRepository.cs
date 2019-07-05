@@ -59,17 +59,42 @@ namespace AccessFacade.Dal.Repository.Implementation
             }
         }
 
-        public async Task SelectAsync()
+        public async Task<List<OneToTest>> SelectAsync()
         {
             #region normalSelect
-            string sql = @"SELECT * FROM UserTest";
-
+            string sqlOneToMany = @"SELECT 
+                                OneToTest.Id,
+                                OneToTest.Name,
+                                OneToTest.Age,
+                                UserTest.Id,
+                                UserTest.FirstName,
+                                UserTest.LastName,
+                                UserTest.Address,
+                                UserTest.FkOneToTestId
+                                FROM OneToTest 
+                            INNER JOIN UserTest 
+                            ON OneToTest.Id = UserTest.FkOneToTestId";
             using (var connection = new SqlConnection(options.connectionString))
             {
                 try
                 {
-                    var tmp = await connection.QueryAsync<UserTest>(sql);
-                    tmp.ToList();
+                    var lookup = new Dictionary<int, OneToTest>();
+
+                    var tmp = (connection.QueryAsync<OneToTest, UserTest, OneToTest>(sqlOneToMany,
+                        (oneToTest, userTest) =>
+                        {
+                            OneToTest oneTest;
+
+                            if (!lookup.TryGetValue(oneToTest.Id, out oneTest))
+                                lookup.Add(oneToTest.Id, oneTest = oneToTest);
+
+                            if (userTest != null)
+                                oneTest.UserTests.Add(userTest);
+
+                            return oneTest;
+                        })).Result.Distinct().ToList();
+
+                    return tmp;
                 }
                 catch (Exception ex)
                 {

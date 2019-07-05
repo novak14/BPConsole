@@ -20,6 +20,21 @@ namespace AccessFacade.Business
             resultHelp.SelectResults(times[0], times[1], times[2], type);
         }
 
+        public void InsertInsertResult(string[] times, string type)
+        {
+            resultHelp.InsertResults(times[0], times[1], times[2], type);
+        }
+
+        public void InsertUpdateResult(string[] times, string type)
+        {
+            resultHelp.UpdateResults(times[0], times[1], times[2], type);
+        }
+
+        public void InsertDeleteResult(string[] times, string type)
+        {
+            resultHelp.DeleteResults(times[0], times[1], times[2], type);
+        }
+
         public void DeleteInsert()
         {
             resultHelp.DeleteTest();

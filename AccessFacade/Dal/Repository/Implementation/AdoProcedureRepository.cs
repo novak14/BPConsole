@@ -70,10 +70,11 @@ namespace AccessFacade.Dal.Repository.Implementation
             }
         }
 
-        public void Select()
+        public List<OneToTest> Select()
         {
             #region normalSelect
-            List<UserTest> userTests = new List<UserTest>();
+            List<OneToTest> oneToTests = new List<OneToTest>();
+            var lookup = new Dictionary<int, OneToTest>();
 
             using (SqlConnection connection = new SqlConnection(options.connectionString))
             {
@@ -88,16 +89,30 @@ namespace AccessFacade.Dal.Repository.Implementation
                         {
                             while (reader.Read())
                             {
-                                UserTest userTest = new UserTest();
+                                int oneTestId = (int)reader["Id"];
 
-                                userTest.Id = (int)reader["Id"];
+                                OneToTest oneTest;
+                                if (!lookup.TryGetValue(oneTestId, out oneTest))
+                                {
+                                    oneTest = new OneToTest();
+                                    oneTest.Id = oneTestId;
+                                    oneTest.Name = reader["Name"] as string;
+                                    oneTest.Age = (int)reader["Age"];
+
+                                    lookup.Add(oneTestId, oneTest);
+                                    oneToTests.Add(oneTest);
+                                }
+
+                                UserTest userTest = new UserTest();
+                                userTest.Id = (int)reader["UserTestId"];
                                 userTest.FirstName = reader["FirstName"] as string;
                                 userTest.LastName = reader["LastName"] as string;
                                 userTest.Address = reader["Address"] as string;
                                 userTest.FkOneToTestId = (int)reader["FkOneToTestId"];
 
-                                userTests.Add(userTest);
+                                oneTest.UserTests.Add(userTest);
                             }
+                            return oneToTests;
                         }
                     }
                     catch (Exception ex)
